@@ -1,8 +1,8 @@
-# BeSA Cohort 10 — Customer Support Agent with AWS AgentCore
+# BeSA Cohort 10 — Anatomy of Agentic AI on AWS AgentCore
 
-Lab 1 of the [Getting Started with Amazon Bedrock AgentCore](https://catalog.workshops.aws/agentcore-getting-started/en-US) workshop, built as part of **BeSA Cohort 10: Agentic AI from POC to Production on AWS**.
+A hands-on project from **BeSA Cohort 10: Agentic AI from POC to Production on AWS**, covering the full lifecycle of building and deploying an AI agent on Amazon Bedrock AgentCore.
 
-A customer support agent that answers product questions, looks up return policies, and searches the web for troubleshooting help — deployed to AgentCore Runtime.
+Built during the [Getting Started with Amazon Bedrock AgentCore](https://catalog.workshops.aws/agentcore-getting-started/en-US) workshop — a customer support agent that answers product questions, looks up return policies, and searches the web for troubleshooting help.
 
 ## What It Does
 
@@ -58,8 +58,8 @@ Built with **Strands Agents** framework, deployed to **Amazon Bedrock AgentCore 
 
 ```bash
 # Clone and enter project
-git clone https://github.com/wazaglo/besa-agentcore-lab1.git
-cd besa-agentcore-lab1
+git clone https://github.com/wazaglo/besa-anatomy-of-agentic-ai.git
+cd besa-anatomy-of-agentic-ai
 
 # Install dependencies
 cd app/CustomerSupport

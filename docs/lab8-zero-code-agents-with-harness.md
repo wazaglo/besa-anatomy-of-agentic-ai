@@ -201,3 +201,51 @@ agentcore invoke --harness OrderResearchAgent --session-id "$SESSION" \
 ## What's Next
 
 Lab 9 will optimize agent quality from real traces.
+
+## Bonus: Additional Harness Agents
+
+### PersistentReportAgent
+
+A harness with persistent session storage using an EFS-mounted volume:
+
+```json
+{
+  "name": "PersistentReportAgent",
+  "model": { "provider": "bedrock", "modelId": "us.anthropic.claude-sonnet-4-6" },
+  "systemPrompt": "You are a report writer. Save all reports to /mnt/reports/ for persistent storage.",
+  "tools": [{ "type": "agentcore_code_interpreter", "name": "code-interpreter" }],
+  "skills": [],
+  "memory": { "mode": "disabled" },
+  "sessionStorage": "/mnt/reports/"
+}
+```
+
+Files saved to `/mnt/reports/` persist across invocations within the same session — useful for multi-turn report generation workflows.
+
+### ContainerAgent
+
+A harness running in a Docker container with custom system tools:
+
+```json
+{
+  "name": "ContainerAgent",
+  "model": { "provider": "bedrock", "modelId": "us.anthropic.claude-sonnet-4-6" },
+  "systemPrompt": "You are a development assistant with access to git and node.",
+  "tools": [{ "type": "agentcore_code_interpreter", "name": "code-interpreter" }],
+  "skills": [],
+  "memory": { "mode": "disabled" },
+  "container": "public.ecr.aws/docker/library/node:slim"
+}
+```
+
+The `container` field specifies a custom Docker image. The agent runs in a containerized microVM with `git` and `node` available — useful for dev-tooling agents.
+
+### Deploying All Harnesses
+
+All three harnesses (OrderResearchAgent, PersistentReportAgent, ContainerAgent) deploy simultaneously:
+
+```bash
+agentcore deploy -y -v
+```
+
+Each harness gets its own isolated runtime, IAM role, and execution environment.

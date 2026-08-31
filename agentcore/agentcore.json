@@ -20,6 +20,23 @@
         "X-Amzn-Bedrock-AgentCore-Runtime-Custom-User-Id",
         "Authorization"
       ],
+      "connections": [
+        {
+          "id": "gateway-connection",
+          "to": {
+            "type": "gateway",
+            "arn": "arn:aws:bedrock-agentcore:us-east-1:195675606509:gateway/customersupport-my-gateway-secure-5vhssihj27",
+            "outboundAuth": {
+              "oauth": {
+                "providerArn": "arn:aws:cognito-idp:us-east-1:195675606509:userpool/us-east-1_qZ9eMpY7y",
+                "scopes": ["openid"],
+                "grantType": "CLIENT_CREDENTIALS"
+              }
+            }
+          },
+          "description": "Connection to gateway with OAuth outbound auth"
+        }
+      ],
       "authorizerType": "CUSTOM_JWT",
       "authorizerConfiguration": {
         "customJwtAuthorizer": {
@@ -55,17 +72,12 @@
   "knowledgeBases": [],
   "credentials": [
     {
+      "authorizerType": "OAuthCredentialProvider",
       "name": "gateway-egress-oauth",
-      "type": "oauth",
-      "description": "OAuth credential for harness gateway egress",
-      "config": {
-        "oauth": {
-          "discoveryUrl": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_qZ9eMpY7y/.well-known/openid-configuration",
-          "clientId": "5vot9313rbrhv7c1eo30r56bkc",
-          "clientSecret": "",
-          "scopes": ["default-m2m-resource-server-c12b6560/read"]
-        }
-      }
+      "discoveryUrl": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_qZ9eMpY7y/.well-known/openid-configuration",
+      "scopes": ["openid"],
+      "vendor": "CustomOauth2",
+      "usage": "outbound"
     }
   ],
   "evaluators": [],
@@ -116,33 +128,41 @@
         }
       },
       "enableSemanticSearch": true,
-      "exceptionLevel": "NONE"
+      "exceptionLevel": "NONE",
+      "policyEngineConfiguration": {
+        "policyEngineName": "CustomerSupportPolicyEngine",
+        "mode": "ENFORCE"
+      }
     }
   ],
   "policyEngines": [
     {
       "name": "CustomerSupportPolicyEngine",
-      "description": "Governs customer support agent tool access — refund limits and tool permissions",
-      "enforcementMode": "ACTIVE",
+      "description": "Governs customer support agent tool access",
       "policies": [
         {
           "name": "refund_limit_policy",
-          "statement": "permit(principal, action == AgentCore::Action::\"ProcessRefund___process_refund\", resource == AgentCore::Gateway::\"arn:aws:bedrock-agentcore:us-east-1:195675606509:gateway/my-gateway-secure\") when { context.input.amount < 100 };",
+          "description": "Only permit refunds under $100",
+          "sourceFile": "app/CustomerSupport/policies/refund_limit_policy.cedar",
+          "statement": "permit(principal, action == AgentCore::Action::\"ProcessRefund___process_refund\", resource == AgentCore::Gateway::\"arn:aws:bedrock-agentcore:us-east-1:195675606509:gateway/customersupport-my-gateway-secure-5vhssihj27\") when { context.input.amount < 100 };",
           "validationMode": "FAIL_ON_ANY_FINDINGS",
-          "description": "Allow refunds under 100 dollars only"
+          "enforcementMode": "ACTIVE"
         },
         {
           "name": "warranty_check_policy",
-          "statement": "permit(principal, action == AgentCore::Action::\"WarrantyCheck___check_warranty\", resource == AgentCore::Gateway::\"arn:aws:bedrock-agentcore:us-east-1:195675606509:gateway/my-gateway-secure\") when { principal is AgentCore::OAuthUser };",
+          "description": "Allow all authenticated users to check warranties",
+          "sourceFile": "app/CustomerSupport/policies/warranty_check_policy.cedar",
+          "statement": "permit(principal, action == AgentCore::Action::\"WarrantyCheck___check_warranty\", resource == AgentCore::Gateway::\"arn:aws:bedrock-agentcore:us-east-1:195675606509:gateway/customersupport-my-gateway-secure-5vhssihj27\") when { principal is AgentCore::OAuthUser };",
           "validationMode": "IGNORE_ALL_FINDINGS",
-          "description": "Allow all authenticated users to check warranties"
+          "enforcementMode": "ACTIVE"
         },
         {
           "name": "BlockSensitiveRefundReasons",
-          "statement": "forbid(principal, action == AgentCore::Action::\"ProcessRefund___process_refund\", resource == AgentCore::Gateway::\"arn:aws:bedrock-agentcore:us-east-1:195675606509:gateway/my-gateway-secure\") when guardrails { BedrockGuardrails::SensitiveInformation([\"EMAIL\"], [context.input.reason]).maxConfidenceScore().greaterThanOrEqual(decimal(\"0.2\")) };",
+          "description": "Block refund requests containing email addresses in reason",
+          "sourceFile": "app/CustomerSupport/policies/block_sensitive_info.cedar",
+          "statement": "forbid(principal, action == AgentCore::Action::\"ProcessRefund___process_refund\", resource == AgentCore::Gateway::\"arn:aws:bedrock-agentcore:us-east-1:195675606509:gateway/customersupport-my-gateway-secure-5vhssihj27\") when guardrails { BedrockGuardrails::SensitiveInformation([\"EMAIL\"], [context.input.reason]).maxConfidenceScore().greaterThanOrEqual(decimal(\"0.2\")) };",
           "validationMode": "IGNORE_ALL_FINDINGS",
-          "enforcementMode": "ACTIVE",
-          "description": "Block refunds when reason contains email addresses"
+          "enforcementMode": "ACTIVE"
         }
       ]
     }
@@ -152,16 +172,15 @@
   "harnesses": [
     {
       "name": "OrderResearchAgent",
-      "codeLocation": "app/OrderResearchAgent/",
-      "model": {
-        "provider": "bedrock",
-        "modelId": "us.anthropic.claude-sonnet-4-6"
-      },
-      "systemPrompt": "You are an order research specialist. Help customers investigate order issues, check warranties, and produce detailed analysis reports. Always be thorough and provide structured summaries. Save reports to /tmp/ when asked.",
-      "tools": [
-        { "type": "agentcore_code_interpreter", "name": "code-interpreter" }
-      ],
-      "memory": { "mode": "disabled" }
+      "path": "app/OrderResearchAgent"
+    },
+    {
+      "name": "PersistentReportAgent",
+      "path": "app/PersistentReportAgent"
+    },
+    {
+      "name": "ContainerAgent",
+      "path": "app/ContainerAgent"
     }
   ],
   "datasets": [],

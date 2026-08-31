@@ -6,7 +6,7 @@ The agent answers product questions, checks return policies, looks up warranty s
 
 ## What We Built
 
-![Lab 4 Architecture](docs/images/lab4_architecture_diagram.png)
+![Lab 5 Architecture](docs/images/lab5_architecture_diagram.png)
 
 A customer support agent deployed on **Amazon Bedrock AgentCore** with:
 
@@ -17,8 +17,9 @@ A customer support agent deployed on **Amazon Bedrock AgentCore** with:
 | Gateway | [Lab 3](docs/lab3-scaling-tools-with-gateway.md) | Exposes a real Lambda (warranty check) as an MCP tool |
 | JWT Auth | [Lab 4](docs/lab4-securing-and-observing-in-production.md) | Cognito authentication on Runtime + Gateway |
 | Observability | [Lab 4](docs/lab4-securing-and-observing-in-production.md) | CloudWatch traces, logs, GenAI Observability dashboard |
+| Quality Evaluation | [Lab 5](docs/lab5-evaluating-agent-quality.md) | LLM-as-Judge scoring: goal success, correctness, tool selection |
 
-**Stack:** Strands Agents + Amazon Nova Pro + AgentCore Runtime/Memory/Gateway + CloudWatch
+**Stack:** Strands Agents + Amazon Nova Pro + AgentCore Runtime/Memory/Gateway + CloudWatch + Evaluations
 
 ## Labs Progress
 
@@ -28,7 +29,7 @@ A customer support agent deployed on **Amazon Bedrock AgentCore** with:
 | [Lab 2](docs/lab2-adding-memory.md) | Add Memory to Your Agent | ✅ |
 | [Lab 3](docs/lab3-scaling-tools-with-gateway.md) | Scaling Tools with Gateway | ✅ |
 | [Lab 4](docs/lab4-securing-and-observing-in-production.md) | Securing and Observing in Production | ✅ |
-| Lab 5 | Evaluating Agent Quality | ⬜ |
+| [Lab 5](docs/lab5-evaluating-agent-quality.md) | Evaluating Agent Quality | ✅ |
 | Lab 6 | Building the Customer Interface | ⬜ |
 | Lab 7 | Governing Agent Actions with Policies | ⬜ |
 | Lab 8 | Zero-Code Agents with AgentCore Harness | ⬜ |
@@ -118,7 +119,7 @@ agentcore invoke "Do you know anything about me?" \
 ```
 CustomerSupport/
 ├── agentcore/
-│   ├── agentcore.json          # Runtime + memory + gateway + JWT auth config
+│   ├── agentcore.json          # Runtime + memory + gateway + JWT auth + online eval
 │   ├── aws-targets.json        # Deployment targets (account + region)
 │   └── cdk/                    # CDK infrastructure
 ├── app/CustomerSupport/
@@ -130,8 +131,8 @@ CustomerSupport/
 ├── cloudformation/
 │   └── prereqs.yaml            # CloudFormation template (Cognito + Lambda + SSM)
 └── docs/
-    ├── images/                 # Architecture diagrams
-    └── lab[1-4]-*.md           # Workshop lab documentation
+    ├── images/                 # Architecture diagrams (Lab 1-5)
+    └── lab[1-5]-*.md           # Workshop lab documentation
 ```
 
 ## What Each Lab Covers
@@ -142,7 +143,7 @@ CustomerSupport/
 | **Lab 2** | Add SEMANTIC + SUMMARIZATION memory, session isolation, cross-session recall |
 | **Lab 3** | Create Gateway, expose Lambda as MCP tool, tool schema, gateway MCP client |
 | **Lab 4** | Cognito JWT auth on Runtime + Gateway, extract user from token, CloudWatch observability |
-| **Lab 5** | Evaluating agent quality with built-in evaluators |
+| **Lab 5** | Online evaluation with LLM-as-Judge (goal success, correctness, tool selection) |
 | **Lab 6** | Building a customer-facing interface |
 | **Lab 7** | Cedar policy engine for governing agent actions |
 | **Lab 8** | Zero-code agents with AgentCore Harness |
@@ -163,7 +164,7 @@ aws cloudformation delete-stack --stack-name agentcore-workshop-prereqs
 
 ## Cost
 
-Lab 1-2 testing: **under $2 total**. Nova Pro is ~$0.0008/1K input tokens. Always clean up to avoid ongoing charges.
+Lab 1-5 testing: **under $3 total**. Nova Pro is ~$0.0008/1K input tokens. Always clean up to avoid ongoing charges.
 
 ## Model Choice
 

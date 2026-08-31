@@ -10,7 +10,7 @@ Detailed notes for each lab in the **Getting Started with Amazon Bedrock AgentCo
 | [Lab 2](lab2-adding-memory.md) | Add Memory to Your Agent | ✅ Complete |
 | [Lab 3](lab3-scaling-tools-with-gateway.md) | Scaling Tools with Gateway | ✅ Complete |
 | [Lab 4](lab4-securing-and-observing-in-production.md) | Securing and Observing in Production | ✅ Complete |
-| Lab 5 | Evaluating Agent Quality | ⬜ Pending |
+| [Lab 5](lab5-evaluating-agent-quality.md) | Evaluating Agent Quality | ✅ Complete |
 | Lab 6 | Building the Customer Interface | ⬜ Pending |
 | Lab 7 | Governing Agent Actions with Policies | ⬜ Pending |
 | Lab 8 | Zero-Code Agents with AgentCore Harness | ⬜ Pending |
@@ -32,6 +32,15 @@ The prerequisites CloudFormation template is saved at `cloudformation/prereqs.ya
 | `workshop-warranty-check` Lambda | Warranty lookup API (exposed via Gateway in Lab 3) |
 | `workshop-process-refund` Lambda | Refund processing (used in Lab 7) |
 | SSM Parameters | Cognito config, Lambda ARNs stored at `/app/customersupport/agentcore/*` |
+
+## Deployed Resources (Current State)
+
+| Resource | Config | Status |
+|---|---|---|
+| Runtime `CustomerSupport` | JWT auth, Python 3.14, PUBLIC network | ✅ |
+| Memory `SharedMemory` | SEMANTIC + SUMMARIZATION, 30-day expiry | ✅ |
+| Gateway `my-gateway-secure` | JWT auth, WarrantyCheck Lambda target | ✅ |
+| Online Eval `QualityMonitor` | GoalSuccessRate + Correctness + ToolSelectionAccuracy, 100% sampling | ✅ |
 
 ## AWS Account Details
 
@@ -59,3 +68,4 @@ Renamed from `besa-agentcore-lab1` to `besa-anatomy-of-agentic-ai` since the pro
 | Lab 2 | `docs/images/lab2_architecture_diagram.png` |
 | Lab 3 | `docs/images/lab3_architecture_diagram.png` |
 | Lab 4 | `docs/images/lab4_architecture_diagram.png` |
+| Lab 5 | `docs/images/lab5_architecture_diagram.png` |

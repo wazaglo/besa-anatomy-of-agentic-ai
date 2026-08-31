@@ -47,6 +47,15 @@
           ]
         }
       }
+    },
+    {
+      "name": "CustomerSupportAB",
+      "build": "CodeZip",
+      "entrypoint": "main.py",
+      "codeLocation": "app/CustomerSupportAB/",
+      "runtimeVersion": "PYTHON_3_14",
+      "networkMode": "PUBLIC",
+      "protocol": "HTTP"
     }
   ],
   "memories": [
@@ -92,6 +101,15 @@
       ],
       "samplingRate": 100,
       "enableOnCreate": true
+    },
+    {
+      "name": "ABQualityMonitor",
+      "agent": "CustomerSupportAB",
+      "evaluators": [
+        "Builtin.GoalSuccessRate"
+      ],
+      "samplingRate": 100,
+      "enableOnCreate": true
     }
   ],
   "agentCoreGateways": [
@@ -115,6 +133,13 @@
             "lambdaArn": "arn:aws:lambda:us-east-1:195675606509:function:workshop-process-refund",
             "toolSchemaFile": "app/CustomerSupport/tool/refund_schema.json"
           }
+        },
+        {
+          "name": "customer-support-ab",
+          "targetType": "httpRuntime",
+          "httpRuntime": {
+            "runtime": "CustomerSupportAB"
+          }
         }
       ],
       "authorizerType": "CUSTOM_JWT",
@@ -131,7 +156,7 @@
       "exceptionLevel": "NONE",
       "policyEngineConfiguration": {
         "policyEngineName": "CustomerSupportPolicyEngine",
-        "mode": "ENFORCE"
+        "mode": "LOG_ONLY"
       }
     }
   ],

@@ -53,7 +53,21 @@
     }
   ],
   "knowledgeBases": [],
-  "credentials": [],
+  "credentials": [
+    {
+      "name": "gateway-egress-oauth",
+      "type": "oauth",
+      "description": "OAuth credential for harness gateway egress",
+      "config": {
+        "oauth": {
+          "discoveryUrl": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_qZ9eMpY7y/.well-known/openid-configuration",
+          "clientId": "5vot9313rbrhv7c1eo30r56bkc",
+          "clientSecret": "",
+          "scopes": ["default-m2m-resource-server-c12b6560/read"]
+        }
+      }
+    }
+  ],
   "evaluators": [],
   "onlineEvalConfigs": [
     {
@@ -135,7 +149,21 @@
   ],
   "configBundles": [],
   "abTests": [],
-  "harnesses": [],
+  "harnesses": [
+    {
+      "name": "OrderResearchAgent",
+      "codeLocation": "app/OrderResearchAgent/",
+      "model": {
+        "provider": "bedrock",
+        "modelId": "us.anthropic.claude-sonnet-4-6"
+      },
+      "systemPrompt": "You are an order research specialist. Help customers investigate order issues, check warranties, and produce detailed analysis reports. Always be thorough and provide structured summaries. Save reports to /tmp/ when asked.",
+      "tools": [
+        { "type": "agentcore_code_interpreter", "name": "code-interpreter" }
+      ],
+      "memory": { "mode": "disabled" }
+    }
+  ],
   "datasets": [],
   "payments": []
 }

@@ -32,7 +32,7 @@ A customer support agent deployed on **Amazon Bedrock AgentCore** with:
 | [Lab 5](docs/lab5-evaluating-agent-quality.md) | Evaluating Agent Quality | ✅ |
 | [Lab 6](docs/lab6-building-the-customer-interface.md) | Building the Customer Interface | ✅ |
 | [Lab 7](docs/lab7-governing-agent-actions-with-policies.md) | Governing Agent Actions with Policies | ✅ |
-| Lab 8 | Zero-Code Agents with AgentCore Harness | ⬜ |
+| [Lab 8](docs/lab8-zero-code-agents-with-harness.md) | Zero-Code Agents with AgentCore Harness | ✅ |
 | Lab 9 | Optimizing Agent Quality | ⬜ |
 
 ## Prerequisites
@@ -133,6 +133,9 @@ CustomerSupport/
 │   └── frontend/
 │       ├── frontend.py         # Flask server with Cognito auth
 │       └── templates/index.html  # Chat UI
+├── app/OrderResearchAgent/
+│   ├── harness.json            # Zero-code agent config
+│   └── test_hitl.py           # Human-in-the-loop test script
 ├── cloudformation/
 │   └── prereqs.yaml            # CloudFormation template (Cognito + Lambda + SSM)
 └── docs/
@@ -151,7 +154,7 @@ CustomerSupport/
 | **Lab 5** | Online evaluation with LLM-as-Judge (goal success, correctness, tool selection) |
 | **Lab 6** | Flask web chat interface with Cognito auth, direct AgentCore REST API calls |
 | **Lab 7** | Cedar policies for tool governance: refund limits, warranty access, sensitive info guardrails |
-| **Lab 8** | Zero-code agents with AgentCore Harness |
+| **Lab 8** | Zero-code harness agent, OAuth egress, shell access, human-in-the-loop inline functions |
 | **Lab 9** | Optimizing agent quality from real traces |
 
 ## Cleanup

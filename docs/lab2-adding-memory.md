@@ -198,24 +198,9 @@ agentcore invoke "What's my name and how do I like to be contacted?" \
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    AgentCore Runtime                     │
-│                                                          │
-│  ┌──────────────┐    ┌──────────────────────────────┐   │
-│  │ Strands Agent │───▶│ AgentCore Memory             │   │
-│  │ (main.py)    │    │                              │   │
-│  └──────┬───────┘    │  SEMANTIC: /users/{id}/facts │   │
-│         │            │  SUMMARIZATION: /summaries/   │   │
-│         │            └──────────────────────────────┘   │
-│         │                                                │
-│         ├──▶ get_return_policy                          │
-│         ├──▶ get_product_info                           │
-│         └──▶ Exa AI MCP                                 │
-└─────────────────────────────────────────────────────────┘
+![Lab 2 Architecture](images/lab2_architecture_diagram.png)
 
-Custom Header: X-Amzn-Bedrock-AgentCore-Runtime-Custom-User-Id: Sarah
-```
+The Lab 2 architecture adds **AgentCore Memory** to the runtime. The agent now has two memory namespaces: **SEMANTIC** (`/users/{actorId}/facts`) for durable facts like names and preferences, and **SUMMARIZATION** (`/summaries/{actorId}/{sessionId}`) for compressed conversation history. When a user sends a message, the runtime retrieves relevant memories and injects them into the agent's context before it reasons. The custom header `X-Amzn-Bedrock-AgentCore-Runtime-Custom-User-Id` identifies the user for memory scoping. This means a returning customer gets recognized automatically — the agent remembers their name, preferences, and past purchases across sessions, even after the runtime recycles.
 
 ## Files Modified
 

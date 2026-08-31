@@ -103,20 +103,9 @@ def load_model() -> BedrockModel:
 
 ## Architecture
 
-```
-┌─────────────────────────────────────────────────┐
-│                AgentCore Runtime                 │
-│                                                  │
-│  ┌──────────────┐    ┌──────────────────────┐   │
-│  │ Strands Agent │───▶│ Amazon Bedrock       │   │
-│  │ (main.py)    │    │ (Nova Pro)           │   │
-│  └──────┬───────┘    └──────────────────────┘   │
-│         │                                        │
-│         ├──▶ get_return_policy (local tool)     │
-│         ├──▶ get_product_info (local tool)      │
-│         └──▶ Exa AI MCP (web search)            │
-└─────────────────────────────────────────────────┘
-```
+![Lab 1 Architecture](images/lab1_updated_architecture_diagram.png)
+
+The Lab 1 architecture shows the simplest form of an AgentCore agent. The **AgentCore Runtime** hosts a Strands Agent that connects to **Amazon Bedrock** (Nova Pro) for LLM inference. The agent has two types of tools: **local Python tools** (`get_return_policy`, `get_product_info`) defined directly in `main.py`, and an **external MCP tool** (Exa AI) connected via HTTP for web search. All tool logic lives inside the agent's codebase — there's no external service mesh or shared tool infrastructure yet. This is the "prototype" stage: everything is self-contained and ready for testing.
 
 ## Files Modified
 

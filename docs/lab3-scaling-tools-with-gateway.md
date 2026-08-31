@@ -7,18 +7,11 @@
 
 Exposed an existing Lambda function (`workshop-warranty-check`) as an MCP-compatible tool through AgentCore Gateway. The agent can now discover and call the Lambda without modifying its code. Gateway acts as a managed proxy — your agent connects to a single MCP endpoint and gets access to whatever tools are registered behind it.
 
-## Architecture Change
+## Architecture
 
-```
-Lab 1-2 (Local tools):
-  Agent → [get_return_policy(), get_product_info()] (in code)
-  Agent → [Exa AI MCP] (direct connection)
+![Lab 3 Architecture](images/lab3_architecture_diagram.png)
 
-Lab 3 (Gateway + Local):
-  Agent → Gateway → [Lambda: check_warranty]
-  Agent → [get_return_policy(), get_product_info()] (kept local)
-  Agent → [Exa AI MCP] (kept as direct MCP client)
-```
+The Lab 3 architecture introduces **AgentCore Gateway** as a managed MCP endpoint between the agent and external tools. Instead of calling a Lambda function directly, the agent connects to the Gateway via an MCP client, and the Gateway routes requests to the appropriate target (in this case, the `WarrantyCheck` Lambda). The local tools (`get_return_policy`, `get_product_info`) and the Exa AI MCP connection remain unchanged — they're still called directly by the agent. The Gateway adds a layer of indirection that enables tool sharing across agents, centralized authentication, and the ability to swap backends without modifying agent code. This is the "scaling" stage: tools are no longer coupled to a single agent.
 
 ## What Is AgentCore Gateway
 

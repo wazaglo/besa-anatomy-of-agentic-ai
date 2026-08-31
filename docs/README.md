@@ -8,7 +8,7 @@ Detailed notes for each lab in the **Getting Started with Amazon Bedrock AgentCo
 |---|---|---|
 | [Lab 1](lab1-building-the-agent.md) | Building the Agent Prototype | ✅ Complete |
 | [Lab 2](lab2-adding-memory.md) | Add Memory to Your Agent | ✅ Complete |
-| Lab 3 | Scaling Tools with Gateway | ⬜ Pending |
+| [Lab 3](lab3-scaling-tools-with-gateway.md) | Scaling Tools with Gateway | ✅ Complete |
 | Lab 4 | Securing and Observing in Production | ⬜ Pending |
 | Lab 5 | Evaluating Agent Quality | ⬜ Pending |
 | Lab 6 | Building the Customer Interface | ⬜ Pending |

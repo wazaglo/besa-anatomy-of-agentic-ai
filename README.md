@@ -19,7 +19,7 @@ Built with **Strands Agents** framework, deployed to **Amazon Bedrock AgentCore 
 |---|---|---|
 | [Lab 1](docs/lab1-building-the-agent.md) | Building the Agent Prototype | ✅ |
 | [Lab 2](docs/lab2-adding-memory.md) | Add Memory to Your Agent | ✅ |
-| Lab 3 | Scaling Tools with Gateway | ⬜ |
+| [Lab 3](docs/lab3-scaling-tools-with-gateway.md) | Scaling Tools with Gateway | ✅ |
 | Lab 4 | Securing and Observing in Production | ⬜ |
 | Lab 5 | Evaluating Agent Quality | ⬜ |
 | Lab 6 | Building the Customer Interface | ⬜ |
@@ -128,23 +128,27 @@ CustomerSupport/
 ├── README.md
 ├── .gitignore
 ├── agentcore/
-│   ├── agentcore.json          # Project config + memory + header allowlist
+│   ├── agentcore.json          # Project config + memory + gateway + header allowlist
 │   ├── aws-targets.json        # Deployment targets
 │   └── cdk/                    # CDK infrastructure
 ├── app/
 │   └── CustomerSupport/
-│       ├── main.py             # Agent + tools + memory integration
+│       ├── main.py             # Agent + tools + memory + gateway integration
 │       ├── model/
 │       │   └── load.py         # Model config (Amazon Nova Pro)
 │       ├── memory/
 │       │   ├── __init__.py
 │       │   └── session.py      # Memory session manager
+│       ├── tool/
+│       │   ├── __init__.py
+│       │   └── warranty_schema.json  # Gateway tool schema
 │       └── mcp_client/
-│           └── client.py       # Exa AI MCP web search
+│           └── client.py       # Exa AI + Gateway MCP clients
 └── docs/
     ├── README.md               # Workshop documentation index
     ├── lab1-building-the-agent.md
-    └── lab2-adding-memory.md
+    ├── lab2-adding-memory.md
+    └── lab3-scaling-tools-with-gateway.md
 ```
 
 ## Cleanup

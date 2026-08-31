@@ -154,6 +154,9 @@ Look for `gen_ai.tool.call.arguments` and policy denial messages.
 | File | Change |
 |---|---|
 | `app/CustomerSupport/tool/refund_schema.json` | New file — refund tool schema |
+| `app/CustomerSupport/policies/refund_limit_policy.cedar` | Cedar policy — refund amount < $100 |
+| `app/CustomerSupport/policies/warranty_check_policy.cedar` | Cedar policy — warranty check for all users |
+| `app/CustomerSupport/policies/block_sensitive_info.cedar` | Cedar policy — block emails in refund reasons |
 | `agentcore/agentcore.json` | Added ProcessRefund target, policy engine with 3 policies |
 
 ## Key Commands

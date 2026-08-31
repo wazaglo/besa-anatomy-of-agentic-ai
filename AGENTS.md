@@ -1,6 +1,6 @@
-# AgentCore Project
+# Customer Support AI Agent — AgentCore Project
 
-This project contains configuration and infrastructure for an Amazon Bedrock AgentCore application.
+This is the **CustomerSupport** project for BeSA Cohort 10. It implements a customer support agent on Amazon Bedrock AgentCore covering Labs 1-9 of the Getting Started workshop.
 
 The `agentcore/` directory is a declarative model of the project. The `agentcore/cdk/` subdirectory uses the
 `@aws/agentcore-cdk` L3 constructs to deploy the configuration to AWS.
@@ -29,10 +29,10 @@ Tags defined in `agentcore.json` flow through to deployed CloudFormation resourc
 ## Directory Structure
 
 ```
-myProject/
+CustomerSupport/
 ├── AGENTS.md               # This file — AI coding assistant context
 ├── agentcore/
-│   ├── agentcore.json      # Main project config (AgentCoreProjectSpec)
+│   ├── agentcore.json      # Main project config (runtime, memory, gateway, policies, harnesses)
 │   ├── aws-targets.json    # Deployment targets (account + region)
 │   ├── .env.local          # Secrets — API keys (gitignored)
 │   ├── .llm-context/       # TypeScript type definitions for AI assistants
@@ -40,8 +40,17 @@ myProject/
 │   │   ├── agentcore.ts    # AgentCoreProjectSpec types
 │   │   └── aws-targets.ts  # AWS deployment target types
 │   └── cdk/                # AWS CDK project (@aws/agentcore-cdk L3 constructs)
-├── app/                    # Agent application code
-└── evaluators/             # Custom evaluator code (if any)
+├── app/
+│   ├── CustomerSupport/    # Main agent (Strands + Nova Pro)
+│   ├── CustomerSupportAB/  # A/B testing runtime (config-bundle-aware)
+│   ├── OrderResearchAgent/ # Zero-code harness agent
+│   ├── PersistentReportAgent/  # Persistent storage harness
+│   └── ContainerAgent/     # Container-based harness
+├── cloudformation/
+│   └── prereqs.yaml        # CloudFormation template (Cognito + Lambda + SSM)
+└── docs/
+    ├── images/             # Architecture diagrams
+    └── lab[1-9]-*.md       # Workshop lab documentation
 ```
 
 ## Schema Reference

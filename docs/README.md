@@ -14,7 +14,7 @@ Detailed notes for each lab in the **Getting Started with Amazon Bedrock AgentCo
 | [Lab 6](lab6-building-the-customer-interface.md) | Building the Customer Interface | ✅ Complete |
 | [Lab 7](lab7-governing-agent-actions-with-policies.md) | Governing Agent Actions with Policies | ✅ Complete |
 | [Lab 8](lab8-zero-code-agents-with-harness.md) | Zero-Code Agents with AgentCore Harness | ✅ Complete |
-| Lab 9 | Optimizing Agent Quality | ⬜ Pending |
+| [Lab 9](lab9-optimizing-agent-quality.md) | Optimizing Agent Quality | ✅ Complete |
 
 ## Workshop Source
 
@@ -38,9 +38,15 @@ The prerequisites CloudFormation template is saved at `cloudformation/prereqs.ya
 | Resource | Config | Status |
 |---|---|---|
 | Runtime `CustomerSupport` | JWT auth, Python 3.14, PUBLIC network | ✅ |
+| Runtime `CustomerSupportAB` | IAM auth, config-bundle-aware (A/B testing) | ✅ |
 | Memory `SharedMemory` | SEMANTIC + SUMMARIZATION, 30-day expiry | ✅ |
-| Gateway `my-gateway-secure` | JWT auth, WarrantyCheck Lambda target | ✅ |
-| Online Eval `QualityMonitor` | GoalSuccessRate + Correctness + ToolSelectionAccuracy, 100% sampling | ✅ |
+| Gateway `my-gateway-secure` | JWT auth, WarrantyCheck + ProcessRefund + A/B target | ✅ |
+| Online Eval `QualityMonitor` | GoalSuccessRate + Correctness + ToolSelectionAccuracy, 100% | ✅ |
+| Online Eval `ABQualityMonitor` | GoalSuccessRate, 100% (A/B runtime) | ✅ |
+| Policy Engine | 3 Cedar policies (refund limit, warranty check, sensitive info) | ✅ |
+| Harness `OrderResearchAgent` | Zero-code agent with code-interpreter | ✅ |
+| Harness `PersistentReportAgent` | Persistent session storage | ✅ |
+| Harness `ContainerAgent` | Container-based (node:slim) | ✅ |
 
 ## AWS Account Details
 
@@ -69,3 +75,4 @@ Renamed from `besa-agentcore-lab1` to `besa-anatomy-of-agentic-ai` since the pro
 | Lab 3 | `docs/images/lab3_architecture_diagram.png` |
 | Lab 4 | `docs/images/lab4_architecture_diagram.png` |
 | Lab 5 | `docs/images/lab5_architecture_diagram.png` |
+| Lab 7 | `docs/images/lab7_architecture_diagram.png` |

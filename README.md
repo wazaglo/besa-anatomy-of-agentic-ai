@@ -18,6 +18,10 @@ A customer support agent deployed on **Amazon Bedrock AgentCore** with:
 | JWT Auth | [Lab 4](docs/lab4-securing-and-observing-in-production.md) | Cognito authentication on Runtime + Gateway |
 | Observability | [Lab 4](docs/lab4-securing-and-observing-in-production.md) | CloudWatch traces, logs, GenAI Observability dashboard |
 | Quality Evaluation | [Lab 5](docs/lab5-evaluating-agent-quality.md) | LLM-as-Judge scoring: goal success, correctness, tool selection |
+| Chat Interface | [Lab 6](docs/lab6-building-the-customer-interface.md) | Flask web UI with Cognito authentication |
+| Cedar Policies | [Lab 7](docs/lab7-governing-agent-actions-with-policies.md) | Refund limits, warranty access, sensitive info guardrails |
+| Zero-Code Agents | [Lab 8](docs/lab8-zero-code-agents-with-harness.md) | Harness agents, OAuth egress, human-in-the-loop |
+| Optimization | [Lab 9](docs/lab9-optimizing-agent-quality.md) | AI-driven recommendations and A/B testing |
 
 **Stack:** Strands Agents + Amazon Nova Pro + AgentCore Runtime/Memory/Gateway + CloudWatch + Evaluations
 
@@ -33,7 +37,7 @@ A customer support agent deployed on **Amazon Bedrock AgentCore** with:
 | [Lab 6](docs/lab6-building-the-customer-interface.md) | Building the Customer Interface | ✅ |
 | [Lab 7](docs/lab7-governing-agent-actions-with-policies.md) | Governing Agent Actions with Policies | ✅ |
 | [Lab 8](docs/lab8-zero-code-agents-with-harness.md) | Zero-Code Agents with AgentCore Harness | ✅ |
-| Lab 9 | Optimizing Agent Quality | ⬜ |
+| [Lab 9](docs/lab9-optimizing-agent-quality.md) | Optimizing Agent Quality | ✅ |
 
 ## Prerequisites
 
@@ -75,12 +79,10 @@ A customer support agent deployed on **Amazon Bedrock AgentCore** with:
 ```bash
 # Clone
 git clone https://github.com/wazaglo/besa-anatomy-of-agentic-ai.git
-cd besa-anatomy-of-agentic-ai
+cd besa-anatomy-of-agentic-ai/app/CustomerSupport
 
 # Install dependencies
-cd app/CustomerSupport
-uv venv
-uv pip install -r requirements.txt
+uv sync
 
 # Run locally
 agentcore dev
@@ -119,28 +121,27 @@ agentcore invoke "Do you know anything about me?" \
 ```
 CustomerSupport/
 ├── agentcore/
-│   ├── agentcore.json          # Runtime + memory + gateway + JWT auth + online eval
-│   ├── aws-targets.json        # Deployment targets (account + region)
-│   └── cdk/                    # CDK infrastructure
-├── app/CustomerSupport/
-│   ├── main.py                 # Agent entry point + tools + auth
-│   ├── model/load.py           # Model config (Amazon Nova Pro)
-│   ├── memory/session.py       # Memory session manager
-│   ├── mcp_client/client.py    # Exa AI + Gateway MCP clients
-│   ├── tool/
-│   │   ├── warranty_schema.json  # Gateway tool schema
-│   │   └── refund_schema.json    # Refund tool schema
-│   └── frontend/
-│       ├── frontend.py         # Flask server with Cognito auth
-│       └── templates/index.html  # Chat UI
-├── app/OrderResearchAgent/
-│   ├── harness.json            # Zero-code agent config
-│   └── test_hitl.py           # Human-in-the-loop test script
+│   ├── agentcore.json            # Runtime + memory + gateway + policies + harnesses
+│   ├── aws-targets.json          # Deployment targets (account + region)
+│   └── cdk/                      # CDK infrastructure
+├── app/
+│   ├── CustomerSupport/          # Main agent (Python, Strands)
+│   │   ├── main.py               # Agent entry point + tools + auth
+│   │   ├── model/load.py         # Model config (Amazon Nova Pro)
+│   │   ├── memory/session.py     # Memory session manager
+│   │   ├── mcp_client/client.py  # Exa AI + Gateway MCP clients
+│   │   ├── policies/             # Cedar policy files (Lab 7)
+│   │   ├── tool/                 # Gateway tool schemas
+│   │   └── frontend/             # Flask chat UI (Lab 6)
+│   ├── CustomerSupportAB/        # A/B testing runtime (Lab 9)
+│   ├── OrderResearchAgent/       # Zero-code harness agent (Lab 8)
+│   ├── PersistentReportAgent/    # Persistent storage harness (Lab 8)
+│   └── ContainerAgent/           # Container-based harness (Lab 8)
 ├── cloudformation/
-│   └── prereqs.yaml            # CloudFormation template (Cognito + Lambda + SSM)
+│   └── prereqs.yaml              # CloudFormation template (Cognito + Lambda + SSM)
 └── docs/
-    ├── images/                 # Architecture diagrams (Lab 1-5)
-    └── lab[1-6]-*.md           # Workshop lab documentation
+    ├── images/                   # Architecture diagrams
+    └── lab[1-9]-*.md             # Workshop lab documentation
 ```
 
 ## What Each Lab Covers
@@ -154,8 +155,8 @@ CustomerSupport/
 | **Lab 5** | Online evaluation with LLM-as-Judge (goal success, correctness, tool selection) |
 | **Lab 6** | Flask web chat interface with Cognito auth, direct AgentCore REST API calls |
 | **Lab 7** | Cedar policies for tool governance: refund limits, warranty access, sensitive info guardrails |
-| **Lab 8** | Zero-code harness agent, OAuth egress, shell access, human-in-the-loop inline functions |
-| **Lab 9** | Optimizing agent quality from real traces |
+| **Lab 8** | Zero-code harness agents, OAuth egress, shell access, human-in-the-loop inline functions |
+| **Lab 9** | AI-driven system prompt and tool description recommendations, config bundles, A/B testing |
 
 ## Cleanup
 

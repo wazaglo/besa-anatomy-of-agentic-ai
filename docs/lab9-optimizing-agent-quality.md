@@ -31,7 +31,7 @@ Completed the observe-evaluate-improve loop: generated AI-driven optimization re
 ## Prerequisites
 
 1. Update the AgentCore CLI: `agentcore update`
-2. Confirm `bedrock-agentcore >= 1.8.0` in `app/CustomerSupport/pyproject.toml`
+2. Confirm `bedrock-agentcore >= 1.9.1` in `app/CustomerSupport/pyproject.toml`
 3. Transaction Search must be enabled in CloudWatch
 4. Have a valid Cognito token:
 

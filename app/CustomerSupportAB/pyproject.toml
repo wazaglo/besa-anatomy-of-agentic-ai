@@ -6,7 +6,6 @@ build-backend = "hatchling.build"
 name = "CustomerSupportAB"
 version = "0.1.0"
 description = "AgentCore Runtime A/B variant — config-bundle aware, IAM auth"
-readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "aws-opentelemetry-distro",

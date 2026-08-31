@@ -9,8 +9,25 @@ Built during the [Getting Started with Amazon Bedrock AgentCore](https://catalog
 - **`get_return_policy`** — Returns return policy by product category (electronics, accessories, audio)
 - **`get_product_info`** — Searches products by name, ID, or keyword
 - **Exa AI MCP** — Web search for troubleshooting and general questions
+- **AgentCore Memory** — Remembers customer facts across sessions (names, preferences, order history)
 
 Built with **Strands Agents** framework, deployed to **Amazon Bedrock AgentCore Runtime**.
+
+## Labs Completed
+
+| Lab | Topic | Status |
+|---|---|---|
+| [Lab 1](docs/lab1-building-the-agent.md) | Building the Agent Prototype | ✅ |
+| [Lab 2](docs/lab2-adding-memory.md) | Add Memory to Your Agent | ✅ |
+| Lab 3 | Scaling Tools with Gateway | ⬜ |
+| Lab 4 | Securing and Observing in Production | ⬜ |
+| Lab 5 | Evaluating Agent Quality | ⬜ |
+| Lab 6 | Building the Customer Interface | ⬜ |
+| Lab 7 | Governing Agent Actions with Policies | ⬜ |
+| Lab 8 | Zero-Code Agents with AgentCore Harness | ⬜ |
+| Lab 9 | Optimizing Agent Quality | ⬜ |
+
+See [docs/README.md](docs/README.md) for detailed workshop notes.
 
 ## Prerequisites
 
@@ -86,6 +103,23 @@ agentcore status    # Check deployment status
 agentcore invoke "Tell me about the Wireless Headphones"
 ```
 
+### Testing Memory (Lab 2)
+
+```bash
+# Teach the agent about you
+SESSION_A=$(python3 -c 'import uuid; print(uuid.uuid4())')
+agentcore invoke "My name is Sarah and I prefer email updates. I recently bought a Smart Watch." \
+  --session-id $SESSION_A \
+  -H "X-Amzn-Bedrock-AgentCore-Runtime-Custom-User-Id: Sarah" --stream
+
+# Wait for memory extraction, then test cross-session recall
+sleep 2m
+SESSION_B=$(python3 -c 'import uuid; print(uuid.uuid4())')
+agentcore invoke "Do you know anything about me?" \
+  --session-id $SESSION_B \
+  -H "X-Amzn-Bedrock-AgentCore-Runtime-Custom-User-Id: Sarah" --stream
+```
+
 ## Project Structure
 
 ```
@@ -94,16 +128,23 @@ CustomerSupport/
 ├── README.md
 ├── .gitignore
 ├── agentcore/
-│   ├── agentcore.json          # Project config
+│   ├── agentcore.json          # Project config + memory + header allowlist
 │   ├── aws-targets.json        # Deployment targets
 │   └── cdk/                    # CDK infrastructure
-└── app/
-    └── CustomerSupport/
-        ├── main.py             # Agent entry point + tools
-        ├── model/
-        │   └── load.py         # Model config (Amazon Nova Pro)
-        └── mcp_client/
-            └── client.py       # Exa AI MCP web search
+├── app/
+│   └── CustomerSupport/
+│       ├── main.py             # Agent + tools + memory integration
+│       ├── model/
+│       │   └── load.py         # Model config (Amazon Nova Pro)
+│       ├── memory/
+│       │   ├── __init__.py
+│       │   └── session.py      # Memory session manager
+│       └── mcp_client/
+│           └── client.py       # Exa AI MCP web search
+└── docs/
+    ├── README.md               # Workshop documentation index
+    ├── lab1-building-the-agent.md
+    └── lab2-adding-memory.md
 ```
 
 ## Cleanup
@@ -111,8 +152,9 @@ CustomerSupport/
 **Important:** AgentCore Runtime and Bedrock model invocations are billable. Clean up when done.
 
 ```bash
-# 1. Delete the deployed runtime
+# 1. Delete the deployed runtime and memory
 agentcore remove runtime --name CustomerSupport
+agentcore remove memory --name SharedMemory
 
 # 2. Delete the CloudFormation prerequisites stack
 aws cloudformation delete-stack --stack-name agentcore-workshop-prereqs
@@ -130,10 +172,15 @@ aws cloudformation describe-stacks \
 |---|---|
 | Bedrock Nova Pro invocations | ~$0.0008/1K input tokens |
 | AgentCore Runtime | Billed per invocation + compute time |
+| AgentCore Memory | Billed per storage + retrieval |
 | Lambda (prereqs) | Free tier: 1M req/mo |
 | Cognito | Free tier: 50K MAU |
 
-Lab 1 testing: **under $1 total**. Always clean up to avoid ongoing charges.
+Lab 1-2 testing: **under $2 total**. Always clean up to avoid ongoing charges.
+
+## Model Choice
+
+The workshop specifies `global.anthropic.claude-sonnet-4-6` but this model requires submitting a use case details form in the Bedrock console. We switched to `amazon.nova-pro-v1:0` (Amazon Nova Pro) which is pre-approved and cheaper.
 
 ## Resources
 

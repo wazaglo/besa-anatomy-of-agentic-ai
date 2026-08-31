@@ -12,7 +12,7 @@ Detailed notes for each lab in the **Getting Started with Amazon Bedrock AgentCo
 | [Lab 4](lab4-securing-and-observing-in-production.md) | Securing and Observing in Production | ✅ Complete |
 | [Lab 5](lab5-evaluating-agent-quality.md) | Evaluating Agent Quality | ✅ Complete |
 | [Lab 6](lab6-building-the-customer-interface.md) | Building the Customer Interface | ✅ Complete |
-| Lab 7 | Governing Agent Actions with Policies | ⬜ Pending |
+| [Lab 7](lab7-governing-agent-actions-with-policies.md) | Governing Agent Actions with Policies | ✅ Complete |
 | Lab 8 | Zero-Code Agents with AgentCore Harness | ⬜ Pending |
 | Lab 9 | Optimizing Agent Quality | ⬜ Pending |
 

@@ -31,7 +31,7 @@ A customer support agent deployed on **Amazon Bedrock AgentCore** with:
 | [Lab 4](docs/lab4-securing-and-observing-in-production.md) | Securing and Observing in Production | ✅ |
 | [Lab 5](docs/lab5-evaluating-agent-quality.md) | Evaluating Agent Quality | ✅ |
 | [Lab 6](docs/lab6-building-the-customer-interface.md) | Building the Customer Interface | ✅ |
-| Lab 7 | Governing Agent Actions with Policies | ⬜ |
+| [Lab 7](docs/lab7-governing-agent-actions-with-policies.md) | Governing Agent Actions with Policies | ✅ |
 | Lab 8 | Zero-Code Agents with AgentCore Harness | ⬜ |
 | Lab 9 | Optimizing Agent Quality | ⬜ |
 
@@ -127,7 +127,9 @@ CustomerSupport/
 │   ├── model/load.py           # Model config (Amazon Nova Pro)
 │   ├── memory/session.py       # Memory session manager
 │   ├── mcp_client/client.py    # Exa AI + Gateway MCP clients
-│   ├── tool/warranty_schema.json  # Gateway tool schema
+│   ├── tool/
+│   │   ├── warranty_schema.json  # Gateway tool schema
+│   │   └── refund_schema.json    # Refund tool schema
 │   └── frontend/
 │       ├── frontend.py         # Flask server with Cognito auth
 │       └── templates/index.html  # Chat UI
@@ -148,7 +150,7 @@ CustomerSupport/
 | **Lab 4** | Cognito JWT auth on Runtime + Gateway, extract user from token, CloudWatch observability |
 | **Lab 5** | Online evaluation with LLM-as-Judge (goal success, correctness, tool selection) |
 | **Lab 6** | Flask web chat interface with Cognito auth, direct AgentCore REST API calls |
-| **Lab 7** | Cedar policy engine for governing agent actions |
+| **Lab 7** | Cedar policies for tool governance: refund limits, warranty access, sensitive info guardrails |
 | **Lab 8** | Zero-code agents with AgentCore Harness |
 | **Lab 9** | Optimizing agent quality from real traces |
 

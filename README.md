@@ -30,7 +30,7 @@ A customer support agent deployed on **Amazon Bedrock AgentCore** with:
 | [Lab 3](docs/lab3-scaling-tools-with-gateway.md) | Scaling Tools with Gateway | ✅ |
 | [Lab 4](docs/lab4-securing-and-observing-in-production.md) | Securing and Observing in Production | ✅ |
 | [Lab 5](docs/lab5-evaluating-agent-quality.md) | Evaluating Agent Quality | ✅ |
-| Lab 6 | Building the Customer Interface | ⬜ |
+| [Lab 6](docs/lab6-building-the-customer-interface.md) | Building the Customer Interface | ✅ |
 | Lab 7 | Governing Agent Actions with Policies | ⬜ |
 | Lab 8 | Zero-Code Agents with AgentCore Harness | ⬜ |
 | Lab 9 | Optimizing Agent Quality | ⬜ |
@@ -127,12 +127,15 @@ CustomerSupport/
 │   ├── model/load.py           # Model config (Amazon Nova Pro)
 │   ├── memory/session.py       # Memory session manager
 │   ├── mcp_client/client.py    # Exa AI + Gateway MCP clients
-│   └── tool/warranty_schema.json  # Gateway tool schema
+│   ├── tool/warranty_schema.json  # Gateway tool schema
+│   └── frontend/
+│       ├── frontend.py         # Flask server with Cognito auth
+│       └── templates/index.html  # Chat UI
 ├── cloudformation/
 │   └── prereqs.yaml            # CloudFormation template (Cognito + Lambda + SSM)
 └── docs/
     ├── images/                 # Architecture diagrams (Lab 1-5)
-    └── lab[1-5]-*.md           # Workshop lab documentation
+    └── lab[1-6]-*.md           # Workshop lab documentation
 ```
 
 ## What Each Lab Covers
@@ -144,7 +147,7 @@ CustomerSupport/
 | **Lab 3** | Create Gateway, expose Lambda as MCP tool, tool schema, gateway MCP client |
 | **Lab 4** | Cognito JWT auth on Runtime + Gateway, extract user from token, CloudWatch observability |
 | **Lab 5** | Online evaluation with LLM-as-Judge (goal success, correctness, tool selection) |
-| **Lab 6** | Building a customer-facing interface |
+| **Lab 6** | Flask web chat interface with Cognito auth, direct AgentCore REST API calls |
 | **Lab 7** | Cedar policy engine for governing agent actions |
 | **Lab 8** | Zero-code agents with AgentCore Harness |
 | **Lab 9** | Optimizing agent quality from real traces |

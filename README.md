@@ -1,19 +1,26 @@
-# BeSA Cohort 10 — Anatomy of Agentic AI on AWS AgentCore
+# Customer Support AI Agent — AWS AgentCore
 
-A hands-on project from **BeSA Cohort 10: Agentic AI from POC to Production on AWS**, covering the full lifecycle of building and deploying an AI agent on Amazon Bedrock AgentCore.
+A hands-on project from **BeSA Cohort 10: Agentic AI from POC to Production on AWS**. Built during the [Getting Started with Amazon Bedrock AgentCore](https://catalog.workshops.aws/agentcore-getting-started/en-US) workshop.
 
-Built during the [Getting Started with Amazon Bedrock AgentCore](https://catalog.workshops.aws/agentcore-getting-started/en-US) workshop — a customer support agent that answers product questions, looks up return policies, and searches the web for troubleshooting help.
+The agent answers product questions, checks return policies, looks up warranty status via a real Lambda function, searches the web, and remembers returning customers across sessions.
 
-## What It Does
+## What We Built
 
-- **`get_return_policy`** — Returns return policy by product category (electronics, accessories, audio)
-- **`get_product_info`** — Searches products by name, ID, or keyword
-- **Exa AI MCP** — Web search for troubleshooting and general questions
-- **AgentCore Memory** — Remembers customer facts across sessions (names, preferences, order history)
+![Lab 4 Architecture](docs/images/lab4_architecture_diagram.png)
 
-Built with **Strands Agents** framework, deployed to **Amazon Bedrock AgentCore Runtime**.
+A customer support agent deployed on **Amazon Bedrock AgentCore** with:
 
-## Labs Completed
+| Feature | Lab | What It Does |
+|---|---|---|
+| Custom tools | [Lab 1](docs/lab1-building-the-agent.md) | `get_return_policy`, `get_product_info` + Exa AI web search |
+| Memory | [Lab 2](docs/lab2-adding-memory.md) | Remembers customer names, preferences, purchases across sessions |
+| Gateway | [Lab 3](docs/lab3-scaling-tools-with-gateway.md) | Exposes a real Lambda (warranty check) as an MCP tool |
+| JWT Auth | [Lab 4](docs/lab4-securing-and-observing-in-production.md) | Cognito authentication on Runtime + Gateway |
+| Observability | [Lab 4](docs/lab4-securing-and-observing-in-production.md) | CloudWatch traces, logs, GenAI Observability dashboard |
+
+**Stack:** Strands Agents + Amazon Nova Pro + AgentCore Runtime/Memory/Gateway + CloudWatch
+
+## Labs Progress
 
 | Lab | Topic | Status |
 |---|---|---|
@@ -27,30 +34,26 @@ Built with **Strands Agents** framework, deployed to **Amazon Bedrock AgentCore 
 | Lab 8 | Zero-Code Agents with AgentCore Harness | ⬜ |
 | Lab 9 | Optimizing Agent Quality | ⬜ |
 
-See [docs/README.md](docs/README.md) for detailed workshop notes.
-
 ## Prerequisites
 
-### Local Tools
+**Tools:**
 
-| Tool | Min Version | Install |
-|---|---|---|
-| Node.js | 20.x | `nvm install 20` |
-| uv | 0.4+ | `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
-| AWS CLI | 2.x | `aws configure` |
-| Git | 2.x | — |
-| AgentCore CLI | latest | `npm install -g @aws/agentcore@latest` |
+| Tool | Install |
+|---|---|
+| Node.js 20+ | `nvm install 20` |
+| uv | `curl -LsSf https://astral.sh/uv/install.sh \| sh` |
+| AWS CLI | `aws configure` |
+| AgentCore CLI | `npm install -g @aws/agentcore@latest` |
 
-### AWS Account Setup
+**AWS Account:**
 
-1. **Configure credentials** in `us-east-1` or `us-west-2`:
+1. Configure credentials for `us-east-1`:
    ```bash
    aws configure
-   # Or:
    export AWS_DEFAULT_REGION=us-east-1
    ```
 
-2. **Deploy prerequisites stack** (Cognito, Lambda, SSM params):
+2. Deploy the prerequisites stack (Cognito, Lambda, SSM params):
    ```bash
    aws cloudformation deploy \
      --template-file cloudformation/prereqs.yaml \
@@ -58,23 +61,18 @@ See [docs/README.md](docs/README.md) for detailed workshop notes.
      --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
      --region us-east-1
    ```
-   Or use the one-click deploy from the workshop page.
 
-3. **Enable Transaction Search** (for Lab 4 observability):
+3. Enable Transaction Search for observability:
    ```bash
    aws xray update-indexing-rule \
      --name Default \
      --rule '{"Probabilistic": {"DesiredSamplingPercentage": 100}}'
    ```
 
-4. **Request model access** in Bedrock console if using Claude:
-   - Console → Bedrock → Model access → Request model access
-   - Select Anthropic Claude Sonnet 4.6 (or use Nova Pro which is pre-approved)
-
-## Quick Start
+## Getting Started
 
 ```bash
-# Clone and enter project
+# Clone
 git clone https://github.com/wazaglo/besa-anatomy-of-agentic-ai.git
 cd besa-anatomy-of-agentic-ai
 
@@ -86,7 +84,7 @@ uv pip install -r requirements.txt
 # Run locally
 agentcore dev
 
-# In another terminal, test
+# Test locally (another terminal)
 agentcore invoke "What's the return policy for electronics?"
 ```
 
@@ -96,27 +94,22 @@ agentcore invoke "What's the return policy for electronics?"
 agentcore deploy
 ```
 
-First deploy takes 2-5 minutes. After deployment:
+First deploy takes 2-5 minutes. Then:
 
 ```bash
-agentcore status    # Check deployment status
-agentcore invoke "Tell me about the Wireless Headphones"
-```
+agentcore status
 
-### Testing Memory (Lab 2)
-
-```bash
-# Teach the agent about you
-SESSION_A=$(python3 -c 'import uuid; print(uuid.uuid4())')
-agentcore invoke "My name is Sarah and I prefer email updates. I recently bought a Smart Watch." \
-  --session-id $SESSION_A \
+# Test memory (Lab 2+)
+SESSION=$(python3 -c 'import uuid; print(uuid.uuid4())')
+agentcore invoke "My name is Sarah and I prefer email updates." \
+  --session-id $SESSION \
   -H "X-Amzn-Bedrock-AgentCore-Runtime-Custom-User-Id: Sarah" --stream
 
-# Wait for memory extraction, then test cross-session recall
 sleep 2m
-SESSION_B=$(python3 -c 'import uuid; print(uuid.uuid4())')
+
+SESSION2=$(python3 -c 'import uuid; print(uuid.uuid4())')
 agentcore invoke "Do you know anything about me?" \
-  --session-id $SESSION_B \
+  --session-id $SESSION2 \
   -H "X-Amzn-Bedrock-AgentCore-Runtime-Custom-User-Id: Sarah" --stream
 ```
 
@@ -124,69 +117,57 @@ agentcore invoke "Do you know anything about me?" \
 
 ```
 CustomerSupport/
-├── AGENTS.md
-├── README.md
-├── .gitignore
 ├── agentcore/
-│   ├── agentcore.json          # Project config + memory + gateway + JWT auth
-│   ├── aws-targets.json        # Deployment targets
+│   ├── agentcore.json          # Runtime + memory + gateway + JWT auth config
+│   ├── aws-targets.json        # Deployment targets (account + region)
 │   └── cdk/                    # CDK infrastructure
-├── app/
-│   └── CustomerSupport/
-│       ├── main.py             # Agent + tools + memory + gateway + JWT auth
-│       ├── model/
-│       │   └── load.py         # Model config (Amazon Nova Pro)
-│       ├── memory/
-│       │   ├── __init__.py
-│       │   └── session.py      # Memory session manager
-│       ├── tool/
-│       │   ├── __init__.py
-│       │   └── warranty_schema.json  # Gateway tool schema
-│       └── mcp_client/
-│           └── client.py       # Exa AI + Gateway MCP clients
+├── app/CustomerSupport/
+│   ├── main.py                 # Agent entry point + tools + auth
+│   ├── model/load.py           # Model config (Amazon Nova Pro)
+│   ├── memory/session.py       # Memory session manager
+│   ├── mcp_client/client.py    # Exa AI + Gateway MCP clients
+│   └── tool/warranty_schema.json  # Gateway tool schema
+├── cloudformation/
+│   └── prereqs.yaml            # CloudFormation template (Cognito + Lambda + SSM)
 └── docs/
-    ├── README.md               # Workshop documentation index
     ├── images/                 # Architecture diagrams
-    ├── lab1-building-the-agent.md
-    ├── lab2-adding-memory.md
-    ├── lab3-scaling-tools-with-gateway.md
-    └── lab4-securing-and-observing-in-production.md
+    └── lab[1-4]-*.md           # Workshop lab documentation
 ```
+
+## What Each Lab Covers
+
+| Lab | Key Concepts |
+|---|---|
+| **Lab 1** | Scaffold project, add custom tools, connect Exa AI MCP, deploy to AgentCore Runtime |
+| **Lab 2** | Add SEMANTIC + SUMMARIZATION memory, session isolation, cross-session recall |
+| **Lab 3** | Create Gateway, expose Lambda as MCP tool, tool schema, gateway MCP client |
+| **Lab 4** | Cognito JWT auth on Runtime + Gateway, extract user from token, CloudWatch observability |
+| **Lab 5** | Evaluating agent quality with built-in evaluators |
+| **Lab 6** | Building a customer-facing interface |
+| **Lab 7** | Cedar policy engine for governing agent actions |
+| **Lab 8** | Zero-code agents with AgentCore Harness |
+| **Lab 9** | Optimizing agent quality from real traces |
 
 ## Cleanup
 
-**Important:** AgentCore Runtime and Bedrock model invocations are billable. Clean up when done.
+AgentCore Runtime and Bedrock model invocations are billable.
 
 ```bash
-# 1. Delete the deployed runtime and memory
+# Remove deployed resources
 agentcore remove runtime --name CustomerSupport
 agentcore remove memory --name SharedMemory
 
-# 2. Delete the CloudFormation prerequisites stack
+# Delete CloudFormation stack
 aws cloudformation delete-stack --stack-name agentcore-workshop-prereqs
-
-# 3. Confirm deletion
-aws cloudformation describe-stacks \
-  --stack-name agentcore-workshop-prereqs \
-  --query 'Stacks[0].StackStatus' --output text
-# Should show DELETE_COMPLETE after a few minutes
 ```
 
-## Cost Estimate
+## Cost
 
-| Resource | Cost |
-|---|---|
-| Bedrock Nova Pro invocations | ~$0.0008/1K input tokens |
-| AgentCore Runtime | Billed per invocation + compute time |
-| AgentCore Memory | Billed per storage + retrieval |
-| Lambda (prereqs) | Free tier: 1M req/mo |
-| Cognito | Free tier: 50K MAU |
-
-Lab 1-2 testing: **under $2 total**. Always clean up to avoid ongoing charges.
+Lab 1-2 testing: **under $2 total**. Nova Pro is ~$0.0008/1K input tokens. Always clean up to avoid ongoing charges.
 
 ## Model Choice
 
-The workshop specifies `global.anthropic.claude-sonnet-4-6` but this model requires submitting a use case details form in the Bedrock console. We switched to `amazon.nova-pro-v1:0` (Amazon Nova Pro) which is pre-approved and cheaper.
+The workshop uses `global.anthropic.claude-sonnet-4-6` but that requires a use case form in Bedrock console. We use `amazon.nova-pro-v1:0` (pre-approved, cheaper, capable enough for this demo).
 
 ## Resources
 

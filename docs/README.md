@@ -21,23 +21,41 @@ Detailed notes for each lab in the **Getting Started with Amazon Bedrock AgentCo
 - [Getting Started with Amazon Bedrock AgentCore](https://catalog.workshops.aws/agentcore-getting-started/en-US)
 - [BeSA Cohort 10 Registration](https://besa.techexpert.io/program/self-paced-become-a-solutions-architect-agentic-ai-on-aws-3849)
 
-## Key Decisions
+## Infrastructure
 
-### Model Choice
+The prerequisites CloudFormation template is saved at `cloudformation/prereqs.yaml`. It provisions:
 
-The workshop specifies `global.anthropic.claude-sonnet-4-6` as the model. This model requires submitting a use case details form in the Bedrock console before your account is approved to use it.
-
-**Decision:** Switched to `amazon.nova-pro-v1:0` (Amazon Nova Pro) which is pre-approved and doesn't require a use case form. Nova Pro is capable enough for the customer support agent demo and is significantly cheaper.
-
-### Repository Naming
-
-Renamed from `besa-agentcore-lab1` to `besa-anatomy-of-agentic-ai` since the project covers multiple labs and is not limited to Lab 1.
+| Resource | Purpose |
+|---|---|
+| Cognito User Pool | JWT authentication for Runtime + Gateway |
+| Cognito App Clients | Machine (client_credentials) + Web (user password auth) |
+| `workshop-warranty-check` Lambda | Warranty lookup API (exposed via Gateway in Lab 3) |
+| `workshop-process-refund` Lambda | Refund processing (used in Lab 7) |
+| SSM Parameters | Cognito config, Lambda ARNs stored at `/app/customersupport/agentcore/*` |
 
 ## AWS Account Details
 
 - **Account:** 195675606509
 - **Region:** us-east-1
 - **Stack:** agentcore-workshop-prereqs
-- **Lambda Functions:** workshop-warranty-check, workshop-process-refund
 - **Cognito User Pool:** us-east-1_qZ9eMpY7y
-- **SSM Parameters:** /app/customersupport/agentcore/*
+- **SSM Parameters:** `/app/customersupport/agentcore/*`
+
+## Key Decisions
+
+### Model Choice
+
+Workshop default is `global.anthropic.claude-sonnet-4-6` (requires use case form). We use `amazon.nova-pro-v1:0` (pre-approved, cheaper).
+
+### Repository Naming
+
+Renamed from `besa-agentcore-lab1` to `besa-anatomy-of-agentic-ai` since the project covers all 9 labs.
+
+## Architecture Images
+
+| Lab | Image |
+|---|---|
+| Lab 1 | `docs/images/lab1_updated_architecture_diagram.png` |
+| Lab 2 | `docs/images/lab2_architecture_diagram.png` |
+| Lab 3 | `docs/images/lab3_architecture_diagram.png` |
+| Lab 4 | `docs/images/lab4_architecture_diagram.png` |

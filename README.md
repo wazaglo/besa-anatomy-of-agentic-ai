@@ -116,6 +116,79 @@ agentcore invoke "Do you know anything about me?" \
   -H "X-Amzn-Bedrock-AgentCore-Runtime-Custom-User-Id: Sarah" --stream
 ```
 
+## Replicating in a Different Account
+
+This repo is a complete source of truth. Everything needed to replicate the deployment is here — agent configs, Lambda code (inline in CloudFormation), Cedar policies, harness configs, gateway schemas, and CDK infrastructure. Here's how to redeploy from scratch:
+
+**1. Prerequisites**
+
+Ensure your target account has:
+- Amazon Bedrock model access enabled for `amazon.nova-pro-v1:0` in `us-east-1`
+- IAM permissions for CloudFormation, Lambda, Cognito, SSM, Bedrock AgentCore
+
+**2. Deploy the prerequisites stack**
+
+```bash
+aws cloudformation deploy \
+  --template-file cloudformation/prereqs.yaml \
+  --stack-name agentcore-workshop-prereqs \
+  --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM \
+  --region us-east-1
+```
+
+This creates Cognito (user pool, clients, domain), 2 Lambda functions (warranty check + refund), IAM roles, and SSM parameters. All values are auto-generated — no manual configuration needed.
+
+**3. Update the deployment target**
+
+Edit `agentcore/aws-targets.json` with your account ID:
+```json
+[{
+  "name": "default",
+  "description": "Default target (us-east-1)",
+  "account": "YOUR_ACCOUNT_ID",
+  "region": "us-east-1"
+}]
+```
+
+**4. Deploy AgentCore resources**
+
+```bash
+cd app/CustomerSupport
+uv sync
+agentcore deploy
+```
+
+This deploys 2 runtimes, gateway, memory, policy engine, 3 harnesses, 2 eval configs, and credential provider. Takes 2-5 minutes.
+
+**5. Update Cedar policy gateway ARNs**
+
+After the first deploy, the gateway ARN is generated with a unique hash. Update the 3 Cedar policy files in `app/CustomerSupport/policies/` with the new gateway ARN from `agentcore status`:
+
+- `refund_limit_policy.cedar`
+- `warranty_check_policy.cedar`
+- `block_sensitive_info.cedar`
+
+Then redeploy: `agentcore deploy`
+
+**6. Create the workshop user**
+
+```bash
+aws cognito-idp admin-create-user \
+  --user-pool-id $(aws ssm get-parameter --name /app/customersupport/agentcore/pool_id --query Parameter.Value --output text) \
+  --username workshopuser@example.com \
+  --user-attributes Name=email,Value=workshopuser@example.com Name=email_verified,Value=true \
+  --temporary-password "WorkshopPass1!"
+```
+
+**7. Configure secrets (optional)**
+
+If using Exa AI web search, set the API key in `agentcore/.env.local`:
+```
+EXA_API_KEY=your_key_here
+```
+
+**Note:** The Flask frontend (`app/CustomerSupport/frontend/frontend.py`) has hardcoded workshop credentials on lines 33-34. Update these if using a different user.
+
 ## Project Structure
 
 ```
@@ -160,14 +233,45 @@ CustomerSupport/
 
 ## Cleanup
 
-AgentCore Runtime and Bedrock model invocations are billable.
+AgentCore Runtime and Bedrock model invocations are billable. Always tear down when done.
+
+**Quick teardown (recommended):**
 
 ```bash
-# Remove deployed resources
-agentcore remove runtime --name CustomerSupport
-agentcore remove memory --name SharedMemory
+# Destroy all AgentCore resources via CDK
+cd agentcore/cdk
+npx cdk destroy
 
-# Delete CloudFormation stack
+# Delete prerequisites (Cognito, Lambdas, IAM, SSM)
+aws cloudformation delete-stack --stack-name agentcore-workshop-prereqs
+```
+
+**Granular teardown (remove resources individually):**
+
+```bash
+# Remove online eval configs
+agentcore remove online-eval --name QualityMonitor -y
+agentcore remove online-eval --name ABQualityMonitor -y
+
+# Remove harnesses
+agentcore remove harness --name OrderResearchAgent -y
+agentcore remove harness --name PersistentReportAgent -y
+agentcore remove harness --name ContainerAgent -y
+
+# Remove runtimes
+agentcore remove runtime --name CustomerSupportAB -y
+agentcore remove runtime --name CustomerSupport -y
+
+# Remove gateway, credential, memory, policy engine
+agentcore remove gateway --name my-gateway-secure -y
+agentcore remove credential --name gateway-egress-oauth -y
+agentcore remove memory --name SharedMemory -y
+agentcore remove policy-engine --name CustomerSupportPolicyEngine -y
+
+# Deploy to tear down the CloudFormation stack
+agentcore deploy
+
+# Delete prerequisites
 aws cloudformation delete-stack --stack-name agentcore-workshop-prereqs
 ```
 

@@ -1,4 +1,4 @@
-# Customer Support AI Agent — AgentCore Project
+# Customer Support AI Agent: AgentCore Project
 
 This is the **CustomerSupport** project for BeSA Cohort 10. It implements a customer support agent on Amazon Bedrock AgentCore covering Labs 1-9 of the Getting Started workshop.
 
@@ -8,7 +8,7 @@ The `agentcore/` directory is a declarative model of the project. The `agentcore
 ## Mental Model
 
 The project uses a **flat resource model**. Agents, memories, credentials, gateways, evaluators, and policies are
-independent top-level arrays in `agentcore.json`. There is no binding between resources in the schema — each resource is
+independent top-level arrays in `agentcore.json`. There is no binding between resources in the schema, each resource is
 provisioned independently. Agents discover memories and credentials at runtime via environment variables or SDK calls.
 Tags defined in `agentcore.json` flow through to deployed CloudFormation resources.
 
@@ -74,7 +74,7 @@ file maps to a JSON config file and includes validation constraints as comments 
 - **OnlineEvalConfig**: Continuous evaluation pipeline bound to an agent
 - **OnlineInsightsConfig** _[preview]_: Continuous failure-pattern analysis bound to an agent
 - **KnowledgeBase**: Managed Bedrock Knowledge Base auto-wired to a gateway
-- **Harness**: Declarative agent — runtime + tools + skills + memory + observability without writing agent code
+- **Harness**: Declarative agent, runtime + tools + skills + memory + observability without writing agent code
 - **PolicyEngine** + **Policy**: Cedar policy engine with form-based guardrails (Bedrock content filters, prompt-attack, sensitive-info) or raw Cedar policies
 - **PaymentManager** + **PaymentConnector**: x402-protocol payment orchestration with provider credentials (CoinbaseCDP, StripePrivy)
 - **ConfigBundle**: Versioned runtime configuration as a separately-deployable resource
@@ -102,17 +102,17 @@ file maps to a JSON config file and includes validation constraints as comments 
 
 ### Supported Frameworks (for template agents)
 
-- **Strands** — Bedrock, Anthropic, OpenAI, Gemini
-- **LangChain/LangGraph** — Bedrock, Anthropic, OpenAI, Gemini
-- **GoogleADK** — Gemini
-- **OpenAI Agents** — OpenAI
-- **Autogen** — Bedrock, Anthropic, OpenAI, Gemini
+- **Strands**: Bedrock, Anthropic, OpenAI, Gemini
+- **LangChain/LangGraph**: Bedrock, Anthropic, OpenAI, Gemini
+- **GoogleADK**: Gemini
+- **OpenAI Agents**: OpenAI
+- **Autogen**: Bedrock, Anthropic, OpenAI, Gemini
 
 ### Protocols
 
-- **HTTP** — Standard HTTP agent endpoint
-- **MCP** — Model Context Protocol server
-- **A2A** — Agent-to-Agent protocol (Google A2A)
+- **HTTP**: Standard HTTP agent endpoint
+- **MCP**: Model Context Protocol server
+- **A2A**: Agent-to-Agent protocol (Google A2A)
 
 ## Deployment
 
@@ -148,7 +148,7 @@ When modifying JSON config files:
 
 **After every export, you MUST read `app/<agentName>/EXPORT_NOTES.md` before proceeding.**
 
-This file lists any manual follow-up items required before the agent will deploy or run correctly — missing files to create, IAM policies to add, or configuration steps the exporter could not automate. A clean export produces "No manual steps required." Complete every item in the file before running `agentcore deploy`.
+This file lists any manual follow-up items required before the agent will deploy or run correctly, missing files to create, IAM policies to add, or configuration steps the exporter could not automate. A clean export produces "No manual steps required." Complete every item in the file before running `agentcore deploy`.
 
 ```bash
 agentcore export harness --name <harnessName>   # generates app/<agentName>/EXPORT_NOTES.md

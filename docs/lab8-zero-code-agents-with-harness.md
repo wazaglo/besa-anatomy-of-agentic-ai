@@ -5,7 +5,7 @@
 
 ## Overview
 
-Created a fully functional "Order Research Agent" using only CLI configuration — no Python code. AgentCore Harness is a zero-code, declarative way to create and deploy agents. Connected it to the existing secured Gateway with Cedar policies, and built a human-in-the-loop approval flow using inline functions.
+Created a fully functional "Order Research Agent" using only CLI configuration. NOPython code. AgentCore Harness is a zero-code, declarative way to create and deploy agents. Connected it to the existing secured Gateway with Cedar policies, and built a human-in-the-loop approval flow using inline functions.
 
 ## Architecture
 
@@ -47,7 +47,7 @@ agentcore add harness \
   --tools agentcore_code_interpreter
 ```
 
-Creates `app/OrderResearchAgent/harness.json` — the entire agent defined declaratively.
+Creates `app/OrderResearchAgent/harness.json` - the entire agent defined declaratively.
 
 ### 2. OAuth Credential Provider
 
@@ -220,7 +220,7 @@ A harness with persistent session storage using an EFS-mounted volume:
 }
 ```
 
-Files saved to `/mnt/reports/` persist across invocations within the same session — useful for multi-turn report generation workflows.
+Files saved to `/mnt/reports/` persist across invocations within the same session, useful for multi-turn report generation workflows.
 
 ### ContainerAgent
 
@@ -238,7 +238,7 @@ A harness running in a Docker container with custom system tools:
 }
 ```
 
-The `container` field specifies a custom Docker image. The agent runs in a containerized microVM with `git` and `node` available — useful for dev-tooling agents.
+The `container` field specifies a custom Docker image. The agent runs in a containerized microVM with `git` and `node` available, useful for dev-tooling agents.
 
 ### Deploying All Harnesses
 

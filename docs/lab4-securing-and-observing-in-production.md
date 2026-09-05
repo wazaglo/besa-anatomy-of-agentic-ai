@@ -11,7 +11,7 @@ Locked down the agent runtime and gateway with JWT authentication using Amazon C
 
 ![Lab 4 Architecture](images/lab4_architecture_diagram.png)
 
-The Lab 4 architecture secures both entry points with **Cognito JWT authentication**. The client sends a Bearer token that AgentCore Runtime validates before it reaches agent code. The `extract_user_id()` function reads the `username` claim from the JWT to scope memory access — no more custom headers. The agent then propagates the same token to the **secured Gateway** (`my-gateway-secure`), which also validates it before routing to the Lambda. This creates end-to-end identity propagation: the same Cognito user authenticates at both the Runtime and Gateway hops. Meanwhile, **CloudWatch GenAI Observability** automatically collects OpenTelemetry traces from all three services (Runtime, Gateway, Lambda), giving you full visibility into every request path.
+The Lab 4 architecture secures both entry points with **Cognito JWT authentication**. The client sends a Bearer token that AgentCore Runtime validates before it reaches agent code. The `extract_user_id()` function reads the `username` claim from the JWT to scope memory access. NOmore custom headers. The agent then propagates the same token to the **secured Gateway** (`my-gateway-secure`), which also validates it before routing to the Lambda. This creates end-to-end identity propagation: the same Cognito user authenticates at both the Runtime and Gateway hops. Meanwhile, **CloudWatch GenAI Observability** automatically collects OpenTelemetry traces from all three services (Runtime, Gateway, Lambda), giving you full visibility into every request path.
 
 ## What's Already Running
 
@@ -51,7 +51,7 @@ agentcore invoke "What did I just buy?" \
   --stream
 ```
 
-**Expected:** Agent does not know what Alex bought (new session, no memory yet).
+**Expected:** Agent does not know what Alex bought (new session. NOmemory yet).
 
 ### Memory Recall (new session, existing user = remembers via Memory)
 
@@ -101,9 +101,9 @@ agentcore logs --since 1h --query "warranty"
 ### CloudWatch Console
 
 Navigate to **GenAI Observability → Bedrock AgentCore** in CloudWatch:
-- **Agents** — See CustomerSupport agent
-- **Sessions** — All conversation sessions
-- **Traces** — Detailed request traces with latency breakdown
+- **Agents**: See CustomerSupport agent
+- **Sessions**: All conversation sessions
+- **Traces**: Detailed request traces with latency breakdown
 
 ## Part 3: Secure Runtime with Cognito JWT
 
@@ -215,7 +215,7 @@ agentcore add gateway-target \
 
 ### Update MCP Client
 
-Updated `client.py` — new env var name + auth header propagation:
+Updated `client.py` - new env var name + auth header propagation:
 
 ```python
 def get_gateway_mcp_client(auth_header: str) -> MCPClient | None:

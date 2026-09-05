@@ -5,7 +5,7 @@
 
 ## Overview
 
-Added deterministic Cedar policies at the Gateway boundary to control what tools the agent can use and under what conditions. The agent code never changes — policies enforce at the Gateway, before requests reach Lambda. Includes a bonus semantic guardrail that blocks sensitive information (email addresses) in refund reasons using Bedrock Guardrails.
+Added deterministic Cedar policies at the Gateway boundary to control what tools the agent can use and under what conditions. The agent code never changes, policies enforce at the Gateway, before requests reach Lambda. Includes a bonus semantic guardrail that blocks sensitive information (email addresses) in refund reasons using Bedrock Guardrails.
 
 ## Architecture
 
@@ -19,7 +19,7 @@ Customer → Runtime (JWT) → Agent → Gateway → Cedar Policy Engine → Lam
                                          └─ BlockSensitiveRefundReasons (EMAIL in reason)
 ```
 
-Policies are evaluated **deterministically** at the Gateway boundary — the agent can't bypass them even with a clever prompt.
+Policies are evaluated **deterministically** at the Gateway boundary, the agent can't bypass them even with a clever prompt.
 
 ## What Was Built
 
@@ -53,8 +53,8 @@ New Lambda target added to the Gateway with a tool schema:
 }
 ```
 
-- **ENFORCE mode** — denied requests are blocked at the Gateway
-- **Default deny** — all actions denied unless explicitly permitted
+- **ENFORCE mode**: denied requests are blocked at the Gateway
+- **Default deny**: all actions denied unless explicitly permitted
 
 ### 3. Cedar Policies
 
@@ -84,7 +84,7 @@ permit(
 };
 ```
 
-All authenticated users can check warranties. Needed because Cedar uses default deny — without this, existing warranty checks would break.
+All authenticated users can check warranties. Needed because Cedar uses default deny, without this, existing warranty checks would break.
 
 #### Policy 3 (Bonus): Block Sensitive Information
 
@@ -100,7 +100,7 @@ forbid(
 };
 ```
 
-Semantic guardrail that detects email addresses in the refund reason using Bedrock Guardrails. `forbid` overrides `permit` — if an email is detected, the refund is blocked regardless of amount.
+Semantic guardrail that detects email addresses in the refund reason using Bedrock Guardrails. `forbid` overrides `permit` - if an email is detected, the refund is blocked regardless of amount.
 
 ## Testing
 

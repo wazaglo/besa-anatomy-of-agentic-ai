@@ -5,13 +5,13 @@
 
 ## Overview
 
-Exposed an existing Lambda function (`workshop-warranty-check`) as an MCP-compatible tool through AgentCore Gateway. The agent can now discover and call the Lambda without modifying its code. Gateway acts as a managed proxy — your agent connects to a single MCP endpoint and gets access to whatever tools are registered behind it.
+Exposed an existing Lambda function (`workshop-warranty-check`) as an MCP-compatible tool through AgentCore Gateway. The agent can now discover and call the Lambda without modifying its code. Gateway acts as a managed proxy, your agent connects to a single MCP endpoint and gets access to whatever tools are registered behind it.
 
 ## Architecture
 
 ![Lab 3 Architecture](images/lab3_architecture_diagram.png)
 
-The Lab 3 architecture introduces **AgentCore Gateway** as a managed MCP endpoint between the agent and external tools. Instead of calling a Lambda function directly, the agent connects to the Gateway via an MCP client, and the Gateway routes requests to the appropriate target (in this case, the `WarrantyCheck` Lambda). The local tools (`get_return_policy`, `get_product_info`) and the Exa AI MCP connection remain unchanged — they're still called directly by the agent. The Gateway adds a layer of indirection that enables tool sharing across agents, centralized authentication, and the ability to swap backends without modifying agent code. This is the "scaling" stage: tools are no longer coupled to a single agent.
+The Lab 3 architecture introduces **AgentCore Gateway** as a managed MCP endpoint between the agent and external tools. Instead of calling a Lambda function directly, the agent connects to the Gateway via an MCP client, and the Gateway routes requests to the appropriate target (in this case, the `WarrantyCheck` Lambda). The local tools (`get_return_policy`, `get_product_info`) and the Exa AI MCP connection remain unchanged, they're still called directly by the agent. The Gateway adds a layer of indirection that enables tool sharing across agents, centralized authentication, and the ability to swap backends without modifying agent code. This is the "scaling" stage: tools are no longer coupled to a single agent.
 
 ## What Is AgentCore Gateway
 
@@ -32,7 +32,7 @@ In this lab, we used the **Lambda** target type.
 
 ### 1. Tool Schema
 
-Created `app/CustomerSupport/tool/warranty_schema.json` — describes the Lambda tool in natural language so the agent knows what it does and how to call it:
+Created `app/CustomerSupport/tool/warranty_schema.json` - describes the Lambda tool in natural language so the agent knows what it does and how to call it:
 
 ```json
 [
@@ -53,11 +53,11 @@ Created `app/CustomerSupport/tool/warranty_schema.json` — describes the Lambda
 ]
 ```
 
-**Key point:** The `inputSchema` must NOT have a nested `"json"` wrapper. Use `"type": "object"` directly — otherwise deployment fails with "Attribute type null is not yet supported".
+**Key point:** The `inputSchema` must NOT have a nested `"json"` wrapper. Use `"type": "object"` directly, otherwise deployment fails with "Attribute type null is not yet supported".
 
 ### 2. Gateway MCP Client
 
-Updated `app/CustomerSupport/mcp_client/client.py` — added `get_gateway_mcp_client()`:
+Updated `app/CustomerSupport/mcp_client/client.py` - added `get_gateway_mcp_client()`:
 
 ```python
 def get_gateway_mcp_client() -> MCPClient | None:
@@ -74,7 +74,7 @@ def get_gateway_mcp_client() -> MCPClient | None:
 
 ### 3. Gateway Configuration
 
-Updated `agentcore/agentcore.json` — added gateway with Lambda target:
+Updated `agentcore/agentcore.json` - added gateway with Lambda target:
 
 ```json
 "agentCoreGateways": [

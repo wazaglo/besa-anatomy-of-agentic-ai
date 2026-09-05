@@ -5,13 +5,13 @@
 
 ## Overview
 
-Set up continuous quality monitoring using AgentCore Evaluations. The agent is deployed, secured, and observable — but how do you know if it's actually giving good answers? This lab uses LLM-as-a-Judge to automatically score every interaction on goal success, correctness, and tool selection.
+Set up continuous quality monitoring using AgentCore Evaluations. The agent is deployed, secured, and observable, but how do you know if it's actually giving good answers? This lab uses LLM-as-a-Judge to automatically score every interaction on goal success, correctness, and tool selection.
 
 ## Architecture
 
 ![Lab 5 Architecture](images/lab5_architecture_diagram.png)
 
-AgentCore Evaluations monitors the deployed agent by sampling live sessions and scoring them automatically. Results flow into CloudWatch where you can track trends over time. The evaluators run in the background alongside your agent — no code changes needed.
+AgentCore Evaluations monitors the deployed agent by sampling live sessions and scoring them automatically. Results flow into CloudWatch where you can track trends over time. The evaluators run in the background alongside your agent. NOcode changes needed.
 
 ```
 Client → AgentCore Runtime (JWT) → Agent → Tools/Memory/Gateway
@@ -51,7 +51,7 @@ agentcore add online-eval \
 
 ### No Code Changes
 
-Evaluation is configured declaratively via the CLI. The agent code remains unchanged — evaluators run as a sidecar to the runtime.
+Evaluation is configured declaratively via the CLI. The agent code remains unchanged, evaluators run as a sidecar to the runtime.
 
 ## Testing
 
@@ -117,9 +117,9 @@ agentcore logs evals --runtime CustomerSupport --since 30m
 ```
 
 Shows detailed per-interaction scoring with explanations:
-- `GoalSuccessRate = 1.0` — "All five user goals were successfully achieved"
-- `Correctness = 0.5` — "The assistant invented a specific product identification that was never established"
-- `ToolSelectionAccuracy = 1.0` — "Calling get_return_policy with 'audio' directly addresses the user's question"
+- `GoalSuccessRate = 1.0` - "All five user goals were successfully achieved"
+- `Correctness = 0.5` - "The assistant invented a specific product identification that was never established"
+- `ToolSelectionAccuracy = 1.0` - "Calling get_return_policy with 'audio' directly addresses the user's question"
 
 ## Score Interpretation
 

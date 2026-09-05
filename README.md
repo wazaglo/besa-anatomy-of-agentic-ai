@@ -1,4 +1,4 @@
-# Customer Support AI Agent — AWS AgentCore
+# Customer Support AI Agent: AWS AgentCore
 
 A hands-on project from **BeSA Cohort 10: Agentic AI from POC to Production on AWS**. Built during the [Getting Started with Amazon Bedrock AgentCore](https://catalog.workshops.aws/agentcore-getting-started/en-US) workshop.
 
@@ -118,7 +118,7 @@ agentcore invoke "Do you know anything about me?" \
 
 ## Replicating in a Different Account
 
-This repo is a complete source of truth. Everything needed to replicate the deployment is here — agent configs, Lambda code (inline in CloudFormation), Cedar policies, harness configs, gateway schemas, and CDK infrastructure. Here's how to redeploy from scratch:
+This repo is a complete source of truth. Everything needed to replicate the deployment is here, agent configs, Lambda code (inline in CloudFormation), Cedar policies, harness configs, gateway schemas, and CDK infrastructure. Here's how to redeploy from scratch:
 
 **1. Prerequisites**
 
@@ -136,7 +136,7 @@ aws cloudformation deploy \
   --region us-east-1
 ```
 
-This creates Cognito (user pool, clients, domain), 2 Lambda functions (warranty check + refund), IAM roles, and SSM parameters. All values are auto-generated — no manual configuration needed.
+This creates Cognito (user pool, clients, domain), 2 Lambda functions (warranty check + refund), IAM roles, and SSM parameters. All values are auto-generated. NOmanual configuration needed.
 
 **3. Update the deployment target**
 

@@ -30,8 +30,8 @@ AgentCore Memory provides two types:
 
 Important distinction:
 
-- **Session persistence** — AgentCore Runtime keeps conversation context alive within the same `session_id`. Wiped when runtime recycles idle microVMs.
-- **AgentCore Memory** — Durable storage that survives runtime recycling. A brand-new session can still recall facts about the user.
+- **Session persistence**: AgentCore Runtime keeps conversation context alive within the same `session_id`. Wiped when runtime recycles idle microVMs.
+- **AgentCore Memory**: Durable storage that survives runtime recycling. A brand-new session can still recall facts about the user.
 
 The test in Step 5 deliberately uses a new session-id to prove recall is coming from Memory, not session persistence.
 
@@ -128,7 +128,7 @@ Key changes from Lab 1:
    from memory.session import get_memory_session_manager
    ```
 
-2. **Factory pattern** — create agents per session/user instead of single global agent
+2. **Factory pattern** - create agents per session/user instead of single global agent
    ```python
    def get_or_create_agent(session_id, user_id):
        global _agent
@@ -200,7 +200,7 @@ agentcore invoke "What's my name and how do I like to be contacted?" \
 
 ![Lab 2 Architecture](images/lab2_architecture_diagram.png)
 
-The Lab 2 architecture adds **AgentCore Memory** to the runtime. The agent now has two memory namespaces: **SEMANTIC** (`/users/{actorId}/facts`) for durable facts like names and preferences, and **SUMMARIZATION** (`/summaries/{actorId}/{sessionId}`) for compressed conversation history. When a user sends a message, the runtime retrieves relevant memories and injects them into the agent's context before it reasons. The custom header `X-Amzn-Bedrock-AgentCore-Runtime-Custom-User-Id` identifies the user for memory scoping. This means a returning customer gets recognized automatically — the agent remembers their name, preferences, and past purchases across sessions, even after the runtime recycles.
+The Lab 2 architecture adds **AgentCore Memory** to the runtime. The agent now has two memory namespaces: **SEMANTIC** (`/users/{actorId}/facts`) for durable facts like names and preferences, and **SUMMARIZATION** (`/summaries/{actorId}/{sessionId}`) for compressed conversation history. When a user sends a message, the runtime retrieves relevant memories and injects them into the agent's context before it reasons. The custom header `X-Amzn-Bedrock-AgentCore-Runtime-Custom-User-Id` identifies the user for memory scoping. This means a returning customer gets recognized automatically, the agent remembers their name, preferences, and past purchases across sessions, even after the runtime recycles.
 
 ## Files Modified
 

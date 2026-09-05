@@ -5,7 +5,7 @@
 
 ## Overview
 
-Completed the observe-evaluate-improve loop: generated AI-driven optimization recommendations from real traces, packaged them into Configuration Bundles, and validated improvements with A/B testing — all without redeploying code.
+Completed the observe-evaluate-improve loop: generated AI-driven optimization recommendations from real traces, packaged them into Configuration Bundles, and validated improvements with A/B testing, all without redeploying code.
 
 ## How the Optimization Loop Works
 
@@ -72,7 +72,7 @@ agentcore invoke "It stopped working. Can I get my money back?" \
   --runtime CustomerSupport --session-id $SESSION_OPT --bearer-token "$TOKEN" --stream
 ```
 
-Wait 2–5 minutes for CloudWatch ingestion before starting recommendations.
+Wait 2-5 minutes for CloudWatch ingestion before starting recommendations.
 
 ## Step 2: System Prompt Recommendation
 
@@ -130,7 +130,7 @@ Client (Cognito JWT) → Gateway ──┬── Bundle v1 (control)   ──(Si
 
 ### Step 4: Deploy A/B Runtime
 
-The `CustomerSupportAB` runtime is already deployed in `agentcore.json` — a lightweight, config-bundle-aware agent that reads its system prompt from the active bundle via a `BeforeModelCallEvent` hook.
+The `CustomerSupportAB` runtime is already deployed in `agentcore.json` - a lightweight, config-bundle-aware agent that reads its system prompt from the active bundle via a `BeforeModelCallEvent` hook.
 
 ### Step 5: Create Configuration Bundles
 

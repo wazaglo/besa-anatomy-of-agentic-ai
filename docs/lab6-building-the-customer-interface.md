@@ -126,7 +126,7 @@ Open `http://localhost:8501` in your browser.
 - **Same session:** Agent remembers conversation context
 - **New session:** Conversation context resets, but long-term memory facts persist
 - **Token injection:** Flask authenticates once on startup, token embedded in HTML
-- **Direct API calls:** Browser calls AgentCore REST API — no server-side proxy
+- **Direct API calls:** Browser calls AgentCore REST API. NOserver-side proxy
 
 ## Production Notes
 

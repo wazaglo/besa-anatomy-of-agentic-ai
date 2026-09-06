@@ -1,7 +1,7 @@
-"""Skill fetcher — downloads s3/git skills to local filesystem on first use.
+"""Skill fetcher - downloads s3/git skills to local filesystem on first use.
 
 Resolved paths are passed to AgentSkills(skills=...) in main.py.
-Cache directory: <tmpdir>/.agents/skills/ — an absolute path under the system temp
+Cache directory: <tmpdir>/.agents/skills/ - an absolute path under the system temp
 directory (honors $TMPDIR, defaults to /tmp). The runtime working directory (e.g.
 /var/task in a CodeZip runtime) is read-only, so the cache must live somewhere
 guaranteed-writable.
@@ -241,7 +241,7 @@ def _fetch_git_skill(url: str, skill_path: str = "", credential_arn: Optional[st
 def resolve_s3_skills(sources: list, s3_client=None) -> list:
     """Resolve s3:// skill URIs to local filesystem paths.
 
-    Any fetch failure raises and fails the invocation — a partial skill set
+    Any fetch failure raises and fails the invocation - a partial skill set
     would silently run the agent without capabilities the harness declared.
     """
     paths = []
@@ -260,7 +260,7 @@ def resolve_git_skills(sources: list, identity_client=None) -> list:
     Each source is a dict with keys: url (required), path (optional),
     credentialArn (optional), username (optional).
 
-    Any fetch failure raises and fails the invocation — a partial skill set
+    Any fetch failure raises and fails the invocation - a partial skill set
     would silently run the agent without capabilities the harness declared.
     """
     paths = []

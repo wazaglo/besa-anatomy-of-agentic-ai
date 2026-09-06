@@ -64,7 +64,7 @@ def get_gateway_mcp_client() -> MCPClient | None:
     """Returns an MCP Client for AgentCore Gateway, if configured"""
     url = os.environ.get("AGENTCORE_GATEWAY_MY_GATEWAY_URL")
     if not url:
-        logger.warning("Gateway URL not set — gateway tools unavailable")
+        logger.warning("Gateway URL not set - gateway tools unavailable")
         return None
     return MCPClient(lambda: streamablehttp_client(url))
 ```

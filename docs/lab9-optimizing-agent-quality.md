@@ -23,7 +23,7 @@ Completed the observe-evaluate-improve loop: generated AI-driven optimization re
 
 | From this lab | Provides | Used by Optimization as |
 |---|---|---|
-| Lab 1 | System prompt and tool definitions | The optimization targets — the exact artifacts that get improved |
+| Lab 1 | System prompt and tool definitions | The optimization targets - the exact artifacts that get improved |
 | Lab 3 | AgentCore Gateway (my-gateway-secure) | The traffic splitter for A/B testing |
 | Lab 4 | Observability (OTel traces → CloudWatch) | The input the Recommendations engine analyzes |
 | Lab 5 | QualityMonitor online eval with GoalSuccessRate | The target evaluator that defines "better" |
@@ -135,13 +135,13 @@ The `CustomerSupportAB` runtime is already deployed in `agentcore.json` - a ligh
 ### Step 5: Create Configuration Bundles
 
 ```bash
-# Control — current system prompt
+# Control - current system prompt
 agentcore add config-bundle \
   --name customerSupportControl \
   --commit-message "Baseline prompt" \
   --components '{"{{runtime:CustomerSupportAB}}": {"configuration": {"system_prompt": "You are a helpful and professional customer support assistant for an e-commerce company. Provide accurate information using the tools available to you. Be friendly, patient, and understanding. Always offer additional help after answering. Always use tools to get accurate information rather than guessing."}}}'
 
-# Treatment — recommended prompt
+# Treatment - recommended prompt
 agentcore add config-bundle \
   --name customerSupportTreatment \
   --commit-message "Recommended prompt from cs-prompt-rec" \
@@ -231,10 +231,10 @@ agentcore archive ab-test -i $AB_TEST_ID
 | | Config-Bundle Routing | Target-Based Routing |
 |---|---|---|
 | **What changes** | System prompt, config (no code change) | Agent binary, tools, model |
-| **Redeployment needed** | No — config applied at request time | Yes — new runtime required |
+| **Redeployment needed** | No - config applied at request time | Yes - new runtime required |
 | **Best for** | Prompt tuning, config experiments | Code releases, version upgrades |
 | **Traffic split** | Typically 50/50 | Typically 90/10 canary |
-| **Rollback** | Instant — update bundle version | Runtime still running; shift weights back |
+| **Rollback** | Instant - update bundle version | Runtime still running; shift weights back |
 
 ## Files Created/Modified
 

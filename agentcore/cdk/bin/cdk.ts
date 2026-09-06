@@ -30,7 +30,7 @@ async function main() {
 
   // The vended CDK project compiles against the published @aws/agentcore-cdk
   // schema type, which may lag the CLI's own AgentCoreProjectSpec (e.g. payments,
-  // harnesses, gateway fields). Cast once so those fields are reachable.
+  // Harnesses, gateway fields). Cast once so those fields are reachable.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const specAny = spec as any;
 
@@ -56,7 +56,7 @@ async function main() {
     throw new Error('No deployment targets configured. Please define targets in agentcore/aws-targets.json');
   }
 
-  // Read harness configs: the full validated spec drives the CFN resource; the
+  // Read Harness configs: the full validated spec drives the CFN resource; the
   // role-scoped fields drive the IAM role + container build.
   const projectRoot = path.resolve(configRoot, '..');
 
@@ -79,7 +79,7 @@ async function main() {
     }
   }
 
-  // Synthesize an AWS::BedrockAgentCore::Harness resource for each harness entry in the spec.
+  // Synthesize an AWS::BedrockAgentCore::Harness resource for each Harness entry in the spec.
   const harnessConfigs: HarnessConfig[] = [];
   for (const entry of specAny.harnesses ?? []) {
     const harnessDir = path.resolve(projectRoot, entry.path);
@@ -90,7 +90,7 @@ async function main() {
         name: entry.name,
         executionRoleArn: harnessSpec.executionRoleArn,
         // Only an `existing` memory ref carries a name to wire IAM against; managed memory is
-        // owned by the harness (no sibling) and disabled has none — both resolve to undefined.
+        // owned by the Harness (no sibling) and disabled has none - both resolve to undefined.
         memoryName: harnessSpec.memory?.mode === 'existing' ? harnessSpec.memory.name : undefined,
         containerUri: harnessSpec.containerUri,
         hasDockerfile: !!harnessSpec.dockerfile,

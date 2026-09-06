@@ -158,7 +158,7 @@ Navigate to **GenAI Observability → Bedrock AgentCore** → CustomerSupport �
 
 | File | Change |
 |---|---|
-| (none) | Evaluation is configured declaratively — no code changes |
+| (none) | Evaluation is configured declaratively - no code changes |
 
 ## Key Commands
 

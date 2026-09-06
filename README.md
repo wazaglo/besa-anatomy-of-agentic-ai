@@ -118,7 +118,7 @@ agentcore invoke "Do you know anything about me?" \
 
 ## Replicating in a Different Account
 
-This repo is a complete source of truth. Everything needed to replicate the deployment is here, agent configs, Lambda code (inline in CloudFormation), Cedar policies, harness configs, gateway schemas, and CDK infrastructure. Here's how to redeploy from scratch:
+This repo is a complete source of truth. Everything needed to replicate the deployment is here, agent configs, Lambda code (inline in CloudFormation), Cedar policies, Harness configs, gateway schemas, and CDK infrastructure. Here's how to redeploy from scratch:
 
 **1. Prerequisites**
 
@@ -158,7 +158,7 @@ uv sync
 agentcore deploy
 ```
 
-This deploys 2 runtimes, gateway, memory, policy engine, 3 harnesses, 2 eval configs, and credential provider. Takes 2-5 minutes.
+This deploys 2 runtimes, gateway, memory, policy engine, 3 Harness deployments, 2 eval configs, and credential provider. Takes 2-5 minutes.
 
 **5. Update Cedar policy gateway ARNs**
 
@@ -228,7 +228,7 @@ CustomerSupport/
 | **Lab 5** | Online evaluation with LLM-as-Judge (goal success, correctness, tool selection) |
 | **Lab 6** | Flask web chat interface with Cognito auth, direct AgentCore REST API calls |
 | **Lab 7** | Cedar policies for tool governance: refund limits, warranty access, sensitive info guardrails |
-| **Lab 8** | Zero-code harness agents, OAuth egress, shell access, human-in-the-loop inline functions |
+| **Lab 8** | Zero-code Harness agents, OAuth egress, shell access, human-in-the-loop inline functions |
 | **Lab 9** | AI-driven system prompt and tool description recommendations, config bundles, A/B testing |
 
 ## Cleanup

@@ -30,11 +30,11 @@ Tags defined in `agentcore.json` flow through to deployed CloudFormation resourc
 
 ```
 CustomerSupport/
-├── AGENTS.md               # This file — AI coding assistant context
+├── AGENTS.md               # This file - AI coding assistant context
 ├── agentcore/
 │   ├── agentcore.json      # Main project config (runtime, memory, gateway, policies, harnesses)
 │   ├── aws-targets.json    # Deployment targets (account + region)
-│   ├── .env.local          # Secrets — API keys (gitignored)
+│   ├── .env.local          # Secrets - API keys (gitignored)
 │   ├── .llm-context/       # TypeScript type definitions for AI assistants
 │   │   ├── README.md       # Guide to using schema files
 │   │   ├── agentcore.ts    # AgentCoreProjectSpec types
@@ -65,7 +65,7 @@ file maps to a JSON config file and includes validation constraints as comments 
 
 ### Key Types
 
-- **AgentCoreProjectSpec**: Root config with runtimes, memories, knowledge bases, credentials, evaluators, online evals and insights, gateways, policy engines, config bundles, A/B tests, harness registrations, datasets, and payment managers
+- **AgentCoreProjectSpec**: Root config with runtimes, memories, knowledge bases, credentials, evaluators, online evals and insights, gateways, policy engines, config bundles, A/B tests, Harness registrations, datasets, and payment managers
 - **AgentEnvSpec**: Agent configuration (build type, entrypoint, code location, runtime version, network mode)
 - **Memory**: Memory resource with strategies (SEMANTIC, SUMMARIZATION, USER_PREFERENCE, EPISODIC) and expiry
 - **Credential**: API key or OAuth credential provider
@@ -144,7 +144,7 @@ When modifying JSON config files:
 
 ## Harness Export
 
-`agentcore export harness` converts a harness configuration into a deployable Strands Python agent under `app/<agentName>/`.
+`agentcore export harness` converts a declarative agent configuration into a deployable Strands Python agent under `app/<agentName>/`.
 
 **After every export, you MUST read `app/<agentName>/EXPORT_NOTES.md` before proceeding.**
 
@@ -176,9 +176,9 @@ Run `agentcore --help` or `agentcore <command> --help` for full flags. Commonly 
 
 | Command | Description |
 | --- | --- |
-| `agentcore add <resource>` | Add agent, memory, credential, gateway, gateway-target, evaluator, online-eval, online-insights, knowledge-base, harness, policy-engine, policy, payment-manager, payment-connector, config-bundle, dataset, runtime-endpoint |
+| `agentcore add <resource>` | Add agent, memory, credential, gateway, gateway-target, evaluator, online-eval, online-insights, knowledge-base, `harness`, policy-engine, policy, payment-manager, payment-connector, config-bundle, dataset, runtime-endpoint |
 | `agentcore remove <resource>` | Remove any resource |
-| `agentcore export harness` | Export a harness to a Strands runtime agent under `app/<agentName>/` |
+| `agentcore export harness` | Export a Harness to a Strands runtime agent under `app/<agentName>/` |
 
 **Jobs (run, view, archive, lifecycle)**
 

@@ -1,4 +1,4 @@
-"""Customer support agent — dedicated A/B variant (config-bundle aware, IAM auth)."""
+"""Customer support agent - dedicated A/B variant (config-bundle aware, IAM auth)."""
 from strands import Agent, tool
 from strands.models.bedrock import BedrockModel
 from strands.hooks.events import BeforeModelCallEvent

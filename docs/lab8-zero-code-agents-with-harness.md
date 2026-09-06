@@ -51,7 +51,7 @@ Creates `app/OrderResearchAgent/harness.json` - the entire agent defined declara
 
 ### 2. OAuth Credential Provider
 
-The harness has no inbound user token to forward, so it needs its own Cognito token via `client_credentials`:
+The zero-code agent has no inbound user token to forward, so it needs its own Cognito token via `client_credentials`:
 
 ```bash
 agentcore add credential --type oauth --name gateway-egress-oauth \
@@ -150,7 +150,7 @@ app/CustomerSupport/.venv/bin/python app/OrderResearchAgent/test_hitl.py
 
 **Flow:**
 1. Agent tries `process_refund` → Cedar blocks (amount ≥ 100)
-2. Agent calls `approve_exception` → harness pauses
+2. Agent calls `approve_exception` → agent pauses
 3. Script prompts for approval → you type "yes"
 4. Script resumes with approval → agent provides summary
 
@@ -167,8 +167,8 @@ app/CustomerSupport/.venv/bin/python app/OrderResearchAgent/test_hitl.py
 |---|---|
 | **Harness** | Zero-code agent defined declaratively |
 | **Inline Function** | Tool that pauses agent, returns control to caller |
-| **Outbound Auth** | OAuth credential for harness to authenticate to Gateway |
-| **Shell Access** | `--exec` flag runs commands in harness microVM |
+| **Outbound Auth** | OAuth credential for the agent to authenticate to Gateway |
+| **Shell Access** | `--exec` flag runs commands in the microVM |
 | **Filesystem Persistence** | Files persist within a session across invocations |
 | **Model Override** | Change model per invocation without redeploying |
 
@@ -202,11 +202,11 @@ agentcore invoke --harness OrderResearchAgent --session-id "$SESSION" \
 
 Lab 9 will optimize agent quality from real traces.
 
-## Bonus: Additional Harness Agents
+## Bonus: Additional Zero-Code Agents
 
 ### PersistentReportAgent
 
-A harness with persistent session storage using an EFS-mounted volume:
+An agent with persistent session storage using an EFS-mounted volume:
 
 ```json
 {
@@ -224,7 +224,7 @@ Files saved to `/mnt/reports/` persist across invocations within the same sessio
 
 ### ContainerAgent
 
-A harness running in a Docker container with custom system tools:
+An agent running in a Docker container with custom system tools:
 
 ```json
 {
@@ -240,12 +240,12 @@ A harness running in a Docker container with custom system tools:
 
 The `container` field specifies a custom Docker image. The agent runs in a containerized microVM with `git` and `node` available, useful for dev-tooling agents.
 
-### Deploying All Harnesses
+### Deploying All Agents
 
-All three harnesses (OrderResearchAgent, PersistentReportAgent, ContainerAgent) deploy simultaneously:
+All three agents (OrderResearchAgent, PersistentReportAgent, ContainerAgent) deploy simultaneously:
 
 ```bash
 agentcore deploy -y -v
 ```
 
-Each harness gets its own isolated runtime, IAM role, and execution environment.
+Each agent gets its own isolated runtime, IAM role, and execution environment.

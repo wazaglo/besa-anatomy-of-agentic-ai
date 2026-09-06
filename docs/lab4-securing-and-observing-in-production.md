@@ -72,7 +72,7 @@ agentcore invoke "Do you know anything about me?" \
 | **Scope** | Within one session-id | Across all sessions for a user-id |
 | **Mechanism** | Live conversation state in microVM | Aggregated facts stored durably |
 | **Lifetime** | Until session terminates (15 min idle / 8 hr max) | Permanent (until expiry policy) |
-| **Requires setup** | No — built into Runtime | Yes — configured in Lab 2 |
+| **Requires setup** | No - built into Runtime | Yes - configured in Lab 2 |
 
 ## Part 2: Observability
 
@@ -222,7 +222,7 @@ def get_gateway_mcp_client(auth_header: str) -> MCPClient | None:
     """Returns an MCP Client for AgentCore Gateway, if configured"""
     url = os.environ.get("AGENTCORE_GATEWAY_MY_GATEWAY_SECURE_URL")
     if not url:
-        logger.warning("Gateway URL not set — gateway tools unavailable")
+        logger.warning("Gateway URL not set - gateway tools unavailable")
         return None
     return MCPClient(lambda: streamablehttp_client(
         url=url,

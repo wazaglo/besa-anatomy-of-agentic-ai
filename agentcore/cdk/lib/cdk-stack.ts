@@ -152,7 +152,7 @@ export class AgentCoreStack extends Stack {
         const prefix = `AGENTCORE_PAYMENT_${payment.name.toUpperCase().replace(/-/g, '_')}`;
 
         // Wire env vars from construct output tokens into eligible agent environments only.
-        // See isPaymentEligibleAgent — non-Python or non-HTTP runtimes have no shim that
+        // See isPaymentEligibleAgent - non-Python or non-HTTP runtimes have no shim that
         // can consume these env vars, and giving them sts:AssumeRole on the
         // ProcessPaymentRole would broaden the privilege surface unnecessarily.
         for (const env of this.application.environments.values()) {
